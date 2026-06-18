@@ -1,17 +1,16 @@
 # spending_docs
 
-A new Flutter project.
+# Description
+Project to help me keep track of my receipts
 
-## Getting Started
+The design won't be top quality, but I will be focusing on:
+- using best standards
+- using BLoC architecture
+- responsiveness
 
-This project is a starting point for a Flutter application.
+# ... Work in progress ...
 
-A few resources to get you started if this is your first Flutter project:
+# Screenshots
+<img width="860" height="755" alt="image" src="https://github.com/user-attachments/assets/0ed47bd0-a5ad-4564-8015-5a36179971ee" />
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img width="861" height="753" alt="image" src="https://github.com/user-attachments/assets/4861d567-b322-4a10-ae7d-9e79d6573390" />
