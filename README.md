@@ -11,6 +11,6 @@ The design won't be top quality, but I will be focusing on:
 # ... Work in progress ...
 
 # Screenshots
-<img width="860" height="755" alt="image" src="https://github.com/user-attachments/assets/0ed47bd0-a5ad-4564-8015-5a36179971ee" />
+<img width="1277" height="741" alt="image" src="https://github.com/user-attachments/assets/1f0d188c-31eb-41e7-b994-38c11826e134" />
 
-<img width="861" height="753" alt="image" src="https://github.com/user-attachments/assets/4861d567-b322-4a10-ae7d-9e79d6573390" />
+<img width="1276" height="744" alt="image" src="https://github.com/user-attachments/assets/cfc1b4a9-726c-44db-ab46-94f1ca1736d2" />
