@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:io'show Platform;
+import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/cupertino.dart';
 import 'package:spending_docs/blocs/receipt_list_cubit.dart';
 import 'package:spending_docs/blocs/side_menu_cubit.dart';
 import 'package:spending_docs/models/receipt_model.dart';
-import 'package:spending_docs/storage/receipt_storage_support_directory.dart';
 import 'package:spending_docs/widgets/receipt_filter_form.dart';
 import 'package:spending_docs/widgets/receipt_form.dart';
 import 'package:spending_docs/widgets/receipt_item.dart';
@@ -22,19 +21,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<ReceiptModel> _listItems = [];
-
   final _screenWidthFactor = 0.8;
   final _screenHeightFactor = 0.6;
-
-  final _receiptStore = ReceiptStorageSupportDirectory();
-
-  @override
-  void initState() {
-    super.initState();
-
-    refreshReceiptList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +104,7 @@ class _HomePageState extends State<HomePage> {
             },
           ),
 
-          //
+          // Widget opened from side menu
           Align(
             alignment: Alignment.center,
             child: ConstrainedBox(
@@ -136,28 +124,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void populateList() {
-    for (int index = 0; index < 1; index++) {
-      ReceiptModel newReceipt = ReceiptModel(
-        amount: 0,
-        date: DateTime.parse("2025-05-05"),
-      );
-      _listItems.add(newReceipt);
-    }
-  }
-
-  Future<void> refreshReceiptList() async {
-    List<ReceiptModel> newListItems = await _receiptStore.readAll();
-    setState(() {
-      _listItems = newListItems;
-    });
-  }
-
-  Future<void> addElement(ReceiptModel receipt) async {
-    await _receiptStore.add(receipt);
-    await refreshReceiptList();
-  }
-
   void closeSideMenuDisplayedWidget(BuildContext context) {
     context.read<SideMenuCubit>().setSubMenuIndex(0);
   }
@@ -165,40 +131,37 @@ class _HomePageState extends State<HomePage> {
   void displayDatePicker(BuildContext context) {
     if (!kIsWeb && Platform.isIOS) {
       _selectCupertinoDate(context);
-    }
-    else {
-      
-    }
+    } else {}
   }
 
   void _selectCupertinoDate(BuildContext context) {
-  showCupertinoModalPopup(
-    context: context,
-    builder: (_) => Container(
-      height: 250,
-      color: CupertinoColors.systemBackground.resolveFrom(context),
-      child: CupertinoDatePicker(
-        mode: CupertinoDatePickerMode.dateAndTime,
-        initialDateTime: DateTime.now(),
-        onDateTimeChanged: (DateTime newDateTime) {
-          // Handle live stream updates securely
-        },
+    showCupertinoModalPopup(
+      context: context,
+      builder: (_) => Container(
+        height: 250,
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        child: CupertinoDatePicker(
+          mode: CupertinoDatePickerMode.dateAndTime,
+          initialDateTime: DateTime.now(),
+          onDateTimeChanged: (DateTime newDateTime) {
+            // Handle live stream updates securely
+          },
+        ),
       ),
-    ),
-  );
-}
-
-Future<void> _selectMaterialDate(BuildContext context) async {
-  final DateTime? picked = await showDatePicker(
-    context: context,
-    initialDate: DateTime.now(),
-    firstDate: DateTime(2000),
-    lastDate: DateTime(2101),
-    // Security/Reliability tip: Strictly prevent bad inputs
-    selectableDayPredicate: (DateTime val) => val.weekday != DateTime.sunday,
-  );
-  if (picked != null) {
-    // Process your secure timestamp here
+    );
   }
-}
+
+  Future<void> _selectMaterialDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+      // Security/Reliability tip: Strictly prevent bad inputs
+      selectableDayPredicate: (DateTime val) => val.weekday != DateTime.sunday,
+    );
+    if (picked != null) {
+      // Process your secure timestamp here
+    }
+  }
 }

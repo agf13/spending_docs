@@ -2,7 +2,7 @@ import 'package:spending_docs/helpers/conversion.dart';
 
 class ReceiptModel {
   double amount;
-  DateTime? date;
+  DateTime date;
   String storeName;
   String cardNumber;
 
@@ -30,8 +30,10 @@ class ReceiptModel {
     final storeName = attributes[2];
     final cardNumber = attributes[3];
 
+    if (amount == null || date == null) return null;
+
     return ReceiptModel(
-      amount: amount!,
+      amount: amount,
       date: date,
       storeName: storeName,
       cardNumber: cardNumber,
