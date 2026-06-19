@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/cupertino.dart';
 import 'package:spending_docs/blocs/receipt_list_cubit.dart';
 import 'package:spending_docs/blocs/side_menu_cubit.dart';
 import 'package:spending_docs/models/receipt_model.dart';
@@ -126,42 +123,5 @@ class _HomePageState extends State<HomePage> {
 
   void closeSideMenuDisplayedWidget(BuildContext context) {
     context.read<SideMenuCubit>().setSubMenuIndex(0);
-  }
-
-  void displayDatePicker(BuildContext context) {
-    if (!kIsWeb && Platform.isIOS) {
-      _selectCupertinoDate(context);
-    } else {}
-  }
-
-  void _selectCupertinoDate(BuildContext context) {
-    showCupertinoModalPopup(
-      context: context,
-      builder: (_) => Container(
-        height: 250,
-        color: CupertinoColors.systemBackground.resolveFrom(context),
-        child: CupertinoDatePicker(
-          mode: CupertinoDatePickerMode.dateAndTime,
-          initialDateTime: DateTime.now(),
-          onDateTimeChanged: (DateTime newDateTime) {
-            // Handle live stream updates securely
-          },
-        ),
-      ),
-    );
-  }
-
-  Future<void> _selectMaterialDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-      // Security/Reliability tip: Strictly prevent bad inputs
-      selectableDayPredicate: (DateTime val) => val.weekday != DateTime.sunday,
-    );
-    if (picked != null) {
-      // Process your secure timestamp here
-    }
   }
 }
