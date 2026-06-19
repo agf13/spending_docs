@@ -24,6 +24,15 @@ class _ReceiptFormState extends State<ReceiptForm> {
   final _storeNameTextController = TextEditingController();
   final _cardNumberTextController = TextEditingController();
 
+  late final FixedExtentScrollController _yearScrollController;
+  late final FixedExtentScrollController _monthScrollController;
+  late final FixedExtentScrollController _dayScrollController;
+  late final FixedExtentScrollController _hourScrollController;
+  late final FixedExtentScrollController _minuteScrollController;
+  late final FixedExtentScrollController _secondScrollController;
+
+  final _startYear = 1990;
+  final _numberYears = 50;
   int _year = 2000;
   int _month = 1;
   int _day = 1;
@@ -49,13 +58,11 @@ class _ReceiptFormState extends State<ReceiptForm> {
     _minute = currentDate.minute;
     _second = currentDate.second;
 
-    _years = List.generate(50, (index) {
-      return (1990 + index);
+    _years = List.generate(_numberYears, (index) {
+      return (_startYear + index);
     });
     _months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    _days = List.generate(getDaysInMonth(_year, _month), (index) {
-      return 1 + index;
-    });
+    _setListDays(); // Set the list of days
     _hours = List.generate(24, (index) {
       return index;
     });
@@ -65,6 +72,8 @@ class _ReceiptFormState extends State<ReceiptForm> {
     _seconds = List.generate(60, (index) {
       return index;
     });
+
+    _setWheelsInitialItems();
   }
 
   @override
@@ -105,6 +114,9 @@ class _ReceiptFormState extends State<ReceiptForm> {
               keyboardType: TextInputType.text,
               validationFunction: validateCardNumber,
             ),
+
+            // Spacer
+            const SizedBox(height: 10),
 
             // Picker
             _displayDatePicker(context),
@@ -175,9 +187,7 @@ class _ReceiptFormState extends State<ReceiptForm> {
       final amount = Conversion.textToDouble(_amountTextController.text);
       final storeName = _storeNameTextController.text;
       final cardNumber = _cardNumberTextController.text;
-      final date = DateTime.parse(
-        "$_year-$_month-$_day $_hour:$_minute:$_second",
-      );
+      final date = DateTime(_year, _month, _day, _hour, _minute, _second);
 
       if (amount == null) return;
 
@@ -201,7 +211,14 @@ class _ReceiptFormState extends State<ReceiptForm> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // Year wheel
-        wheelPicker(items: _years, title: 'Year', width: width, height: height),
+        wheelPicker(
+          items: _years,
+          title: 'Year',
+          width: width,
+          height: height,
+          onValueChanged: _onYearChanged,
+          controller: _yearScrollController,
+        ),
 
         // Spacer
         SizedBox(width: 5),
@@ -212,19 +229,35 @@ class _ReceiptFormState extends State<ReceiptForm> {
           title: 'Month',
           width: width,
           height: height,
+          onValueChanged: _onMonthChanged,
+          controller: _monthScrollController,
         ),
 
         // Spacer
         SizedBox(width: 5),
 
         // Day wheel
-        wheelPicker(items: _days, title: 'Day', width: width, height: height),
+        wheelPicker(
+          items: _days,
+          title: 'Day',
+          width: width,
+          height: height,
+          onValueChanged: _onDayChanged,
+          controller: _dayScrollController,
+        ),
 
         // Spacer
         SizedBox(width: 5),
 
         // Hour wheel
-        wheelPicker(items: _hours, title: 'Hour', width: width, height: height),
+        wheelPicker(
+          items: _hours,
+          title: 'Hour',
+          width: width,
+          height: height,
+          onValueChanged: _onHourChanged,
+          controller: _hourScrollController,
+        ),
 
         // Spacer
         SizedBox(width: 5),
@@ -235,6 +268,8 @@ class _ReceiptFormState extends State<ReceiptForm> {
           title: 'Minute',
           width: width,
           height: height,
+          onValueChanged: _onMinuteChanged,
+          controller: _minuteScrollController,
         ),
 
         // Spacer
@@ -246,6 +281,8 @@ class _ReceiptFormState extends State<ReceiptForm> {
           title: 'Second',
           width: width,
           height: height,
+          onValueChanged: _onSecondChanged,
+          controller: _secondScrollController,
         ),
       ],
     );
@@ -256,6 +293,8 @@ class _ReceiptFormState extends State<ReceiptForm> {
     required String title,
     required double width,
     required double height,
+    required void Function(int) onValueChanged,
+    required FixedExtentScrollController controller,
   }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -273,11 +312,12 @@ class _ReceiptFormState extends State<ReceiptForm> {
             border: Border.all(color: Colors.grey, width: 2),
           ),
           child: ListWheelScrollView(
+            controller: controller,
             itemExtent: 20,
             useMagnifier: true,
             magnification: 1.2,
             onSelectedItemChanged: (index) {
-              print('$index - ${items[index]}');
+              onValueChanged(items[index]);
             },
             physics: const FixedExtentScrollPhysics(),
             children: items.map((element) {
@@ -289,7 +329,62 @@ class _ReceiptFormState extends State<ReceiptForm> {
     );
   }
 
-  int getDaysInMonth(int year, int month) {
-    return DateUtils.getDaysInMonth(year, month);
+  void _setWheelsInitialItems() {
+    final yearIndex = _getYearIndexInListOfAvailableYears(_year);
+    _yearScrollController = FixedExtentScrollController(initialItem: yearIndex);
+    _monthScrollController = FixedExtentScrollController(
+      initialItem: _month - 1,
+    );
+    _dayScrollController = FixedExtentScrollController(initialItem: _day - 1);
+    _hourScrollController = FixedExtentScrollController(initialItem: _hour);
+    _minuteScrollController = FixedExtentScrollController(initialItem: _minute);
+    _secondScrollController = FixedExtentScrollController(initialItem: _second);
+  }
+
+  void _setListDays() {
+    final daysInMonth = DateUtils.getDaysInMonth(_year, _month);
+
+    if (_day > daysInMonth) {
+      _day = daysInMonth;
+    }
+
+    final _newListDays = List.generate(daysInMonth, (index) {
+      return 1 + index;
+    });
+
+    setState(() {
+      _days = _newListDays;
+    });
+  }
+
+  void _onYearChanged(int newYear) {
+    _year = newYear;
+    _setListDays();
+  }
+
+  void _onMonthChanged(int newMonth) {
+    _month = newMonth;
+    _setListDays();
+  }
+
+  void _onDayChanged(int newDay) {
+    _day = newDay;
+  }
+
+  void _onHourChanged(int newHour) {
+    _hour = newHour;
+  }
+
+  void _onMinuteChanged(int newMinute) {
+    _minute = newMinute;
+  }
+
+  void _onSecondChanged(int newSecond) {
+    _second = newSecond;
+  }
+
+  int _getYearIndexInListOfAvailableYears(int year) {
+    if (year < _startYear || year > _startYear + _numberYears) return -1;
+    return year - _startYear;
   }
 }
