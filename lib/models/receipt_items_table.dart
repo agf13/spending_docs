@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:spending_docs/models/receipts_table.dart';
 
-class ReceiptItemsModel extends Table {
+class ReceiptItems extends Table {
   // Primary key
   IntColumn get id => integer().autoIncrement()();
 
