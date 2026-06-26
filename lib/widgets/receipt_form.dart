@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:spending_docs/blocs/receipt_list_cubit.dart';
-import 'package:spending_docs/helpers/conversion.dart';
-import 'package:spending_docs/models/receipt_model.dart';
+import 'package:drift/drift.dart' as d;
+import 'package:spending_docs/blocs/receipts_list_cubit.dart';
+import 'package:spending_docs/core/utils/receipt_conversions.dart';
+import 'package:spending_docs/database/app_database.dart';
 import 'package:spending_docs/widgets/item_text_input.dart';
 
 class ReceiptForm extends StatefulWidget {
@@ -164,13 +165,19 @@ class _ReceiptFormState extends State<ReceiptForm> {
 
   String? validateAmount(String? text) {
     if (text == null || text.isEmpty) return "Amount needed";
-    if (Conversion.textToDouble(text) == null) return "Needs to be a number";
+
+    if (ReceiptConversions.textToDouble(text) == null) {
+      return "Needs to be a number";
+    }
     return null;
   }
 
   String? validateDate(String? text) {
     if (text == null || text.isEmpty) return "Date needed";
-    if (Conversion.textToDateTime(text) == null) return "Needs a proper date";
+
+    if (ReceiptConversions.textToDateTime(text) == null) {
+      return "Needs a proper date";
+    }
     return null;
   }
 
@@ -179,26 +186,31 @@ class _ReceiptFormState extends State<ReceiptForm> {
   }
 
   String? validateCardNumber(String? text) {
+    if (text != null && text.length > 4) {
+      return 'Card length cannot be over 19 characters';
+    }
     return null; // Card can be missing. Null means no error text to show
   }
 
-  void handleAddFormButton(BuildContext context) async {
+  void handleAddFormButton(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      final amount = Conversion.textToDouble(_amountTextController.text);
+      final amount = ReceiptConversions.textToDouble(
+        _amountTextController.text,
+      );
       final storeName = _storeNameTextController.text;
       final cardNumber = _cardNumberTextController.text;
       final date = DateTime(_year, _month, _day, _hour, _minute, _second);
 
       if (amount == null) return;
 
-      ReceiptModel receipt = ReceiptModel(
-        amount: amount,
-        date: date,
-        storeName: storeName,
-        cardNumber: cardNumber,
+      ReceiptsCompanion receipt = ReceiptsCompanion(
+        amount: d.Value(amount),
+        date: d.Value(date),
+        storeName: d.Value(storeName),
+        card: d.Value(cardNumber),
       );
 
-      context.read<ReceiptListCubit>().addItem(receipt);
+      context.read<ReceiptsListCubit>().addItem(receipt);
     }
   }
 

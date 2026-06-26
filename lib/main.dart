@@ -1,33 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spending_docs/blocs/receipt_list_cubit.dart';
+import 'package:spending_docs/blocs/receipts_list_cubit.dart';
 import 'package:spending_docs/blocs/side_menu_cubit.dart';
+import 'package:spending_docs/database/app_database.dart';
+import 'package:spending_docs/repositories/receipts_repository.dart';
 import 'package:spending_docs/screens/homepage.dart';
-import 'package:spending_docs/storage/receipt_storage_support_directory.dart';
 
 void main() {
-  runApp(MyApp());
+  final database = AppDatabase();
+
+  runApp(MyApp(database: database));
 }
 
 class MyApp extends StatelessWidget {
-  final ReceiptStorageSupportDirectory receiptStorage =
-      ReceiptStorageSupportDirectory();
-
-  MyApp({super.key});
+  final AppDatabase _database;
+  MyApp({super.key, required this._database});
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        // ReceiptListCubit injection in context
-        BlocProvider<ReceiptListCubit>(
-          create: (context) =>
-              ReceiptListCubit(receiptStorage: receiptStorage)..loadItems(),
+        // ReceiptsRepository
+        RepositoryProvider<ReceiptsRepository>(
+          create: (_) => ReceiptsRepository(_database),
         ),
-        // SideMenuCubit injection in context
-        BlocProvider<SideMenuCubit>(create: (context) => SideMenuCubit()),
       ],
-      child: MaterialApp(home: HomePage()),
+
+      child: MultiBlocProvider(
+        providers: [
+          // SideMenuCubit injection in context
+          BlocProvider<SideMenuCubit>(create: (context) => SideMenuCubit()),
+
+          // ReceiptsListCubit (to handle the list of receipts)
+          BlocProvider<ReceiptsListCubit>(
+            create: (context) {
+              final repository = context.read<ReceiptsRepository>();
+              return ReceiptsListCubit(repository)..getItems();
+            },
+          ),
+        ],
+        child: MaterialApp(home: HomePage()),
+      ),
     );
   }
 }

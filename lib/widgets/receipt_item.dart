@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spending_docs/blocs/receipt_list_cubit.dart';
-import 'package:spending_docs/models/receipt_model.dart';
+import 'package:spending_docs/blocs/receipts_list_cubit.dart';
+import 'package:spending_docs/database/app_database.dart' show Receipt;
 
 class ReceiptItem extends StatefulWidget {
-  final ReceiptModel receipt;
+  final Receipt receipt;
 
   const ReceiptItem({super.key, required this.receipt});
 
@@ -42,7 +42,7 @@ class _ReceiptItemState extends State<ReceiptItem> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(widget.receipt.storeName),
+              child: Text(widget.receipt.storeName ?? ""),
             ),
           ),
 
@@ -50,7 +50,7 @@ class _ReceiptItemState extends State<ReceiptItem> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(widget.receipt.cardNumber),
+              child: Text(widget.receipt.card ?? ""),
             ),
           ),
 
@@ -70,6 +70,6 @@ class _ReceiptItemState extends State<ReceiptItem> {
   }
 
   void _handleDelete(BuildContext context) {
-    context.read<ReceiptListCubit>().removeItem(widget.receipt);
+    context.read<ReceiptsListCubit>().removeItem(widget.receipt.id);
   }
 }

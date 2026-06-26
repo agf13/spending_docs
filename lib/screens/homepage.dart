@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spending_docs/blocs/receipt_list_cubit.dart';
+import 'package:spending_docs/blocs/receipts_list_cubit.dart';
+import 'package:spending_docs/blocs/receipts_list_state.dart';
 import 'package:spending_docs/blocs/side_menu_cubit.dart';
-import 'package:spending_docs/models/receipt_model.dart';
+import 'package:spending_docs/core/utils/toast_helper.dart';
 import 'package:spending_docs/widgets/receipt_filter_form.dart';
 import 'package:spending_docs/widgets/receipt_form.dart';
 import 'package:spending_docs/widgets/receipt_item.dart';
@@ -49,17 +50,43 @@ class _HomePageState extends State<HomePage> {
         // List with items
         Expanded(
           flex: 5,
-          child: BlocBuilder<ReceiptListCubit, List<ReceiptModel>>(
-            builder: (context, itemList) {
-              return ListView.builder(
-                itemCount: itemList.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ReceiptItem(receipt: itemList[index]),
-                  );
-                },
-              );
+          child: BlocBuilder<ReceiptsListCubit, ReceiptsListState>(
+            builder: (context, state) {
+              // Display the list of items
+              if (state is ReceiptsListReady) {
+                final itemList = state.items;
+
+                return ListView.builder(
+                  itemCount: itemList.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ReceiptItem(receipt: itemList[index]),
+                    );
+                  },
+                );
+              }
+
+              // Display the text of the error
+              if (state is ReceiptsListError) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(children: [
+                    // Error message
+                    Text(state.error),
+                    // Spacer
+                    SizedBox(height: 10),
+                    // Refresh Button
+                    ElevatedButton(
+                      onPressed: () => context.read<ReceiptsListCubit>().getItems(),
+                      child: Text('Refresh'),
+                      ),
+                  ]),
+                );
+              }
+
+              // Return empty spacer
+              return SizedBox.shrink();
             },
           ),
         ),

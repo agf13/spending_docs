@@ -1,4 +1,4 @@
-class Conversion {
+class ReceiptConversions {
   /*
     def: Convert a text to a double. Return null if the text is not a number
     input: String - the number in the string form
