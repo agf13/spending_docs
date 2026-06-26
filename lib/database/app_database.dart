@@ -7,10 +7,20 @@ part 'app_database.g.dart';
 
 @DriftDatabase(tables: [Receipts, ReceiptItems])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(driftDatabase(name: 'receipts_docs_db.sqlite'));
+  AppDatabase([QueryExecutor? e])
+    : super(e ?? driftDatabase(name: 'receipts_docs_db.sqlite'));
 
   @override
   int get schemaVersion => 1;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      beforeOpen: (details) async {
+        await customStatement('PRAGMA foreign_keys = ON;');
+      },
+    );
+  }
 
   Future<int> insertReceipt(ReceiptsCompanion receipt) {
     return into(receipts).insert(receipt);

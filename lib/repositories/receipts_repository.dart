@@ -17,7 +17,21 @@ class ReceiptsRepository {
     return _db.getAllReceipts();
   }
 
+  Future<Receipt?> getById(int id) {
+    final receiptsSelect = _db.select(_db.receipts);
+    receiptsSelect.where((elem) => elem.id.equals(id));
+
+    return receiptsSelect.getSingleOrNull();
+  }
+
   Future<int> remove(int id) {
     return _db.deleteReceipt(id);
+  }
+
+  Future<int> getTotalItemsCount() async {
+    final result = await _db
+        .customSelect('SELECT COUNT(ID) AS countColumn FROM receipts')
+        .getSingle();
+    return result.read<int>('countColumn');
   }
 }

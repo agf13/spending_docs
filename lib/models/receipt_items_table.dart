@@ -10,6 +10,6 @@ class ReceiptItems extends Table {
       integer().references(Receipts, #id, onDelete: KeyAction.cascade)();
 
   // Fields
-  RealColumn get amount => real()();
-  TextColumn get itenName => text().withLength(max: 150)();
+  RealColumn get price => real()();
+  TextColumn get itemName => text().withLength(max: 150)();
 }
