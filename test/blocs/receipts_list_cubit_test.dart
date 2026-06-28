@@ -159,7 +159,9 @@ void main() {
       blocTest(
         'return ReceiptsListReady when update successfull',
         build: () {
-          when(() => mockRepository.update(receipt1)).thenAnswer((_) async => true);
+          when(
+            () => mockRepository.update(receipt1),
+          ).thenAnswer((_) async => true);
           when(
             () => mockRepository.getAll(),
           ).thenAnswer((_) async => [receipt1]);
@@ -169,7 +171,9 @@ void main() {
         act: (_) {
           receiptsListCubit.editItem(receipt1);
         },
-        expect: () => [ReceiptsListReady([receipt1])],
+        expect: () => [
+          ReceiptsListReady([receipt1]),
+        ],
       );
 
       blocTest(
