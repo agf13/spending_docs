@@ -6,15 +6,15 @@ class ReceiptsRepository {
   ReceiptsRepository(this._db);
 
   Future<int> add(ReceiptsCompanion receipt) {
-    return _db.insertReceipt(receipt);
+    return _db.receiptsDao.insertReceipt(receipt);
   }
 
   Future<bool> update(Receipt receipt) {
-    return _db.updateReceipt(receipt);
+    return _db.receiptsDao.updateReceipt(receipt);
   }
 
   Future<List<Receipt>> getAll() {
-    return _db.getAllReceipts();
+    return _db.receiptsDao.getAllReceipts();
   }
 
   Future<Receipt?> getById(int id) {
@@ -25,7 +25,7 @@ class ReceiptsRepository {
   }
 
   Future<int> remove(int id) {
-    return _db.deleteReceipt(id);
+    return _db.receiptsDao.deleteReceipt(id);
   }
 
   Future<int> getTotalItemsCount() async {

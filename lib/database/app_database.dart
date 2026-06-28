@@ -1,11 +1,12 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
+import 'package:spending_docs/database/receipts_dao.dart';
 import 'package:spending_docs/models/receipts_table.dart';
 import 'package:spending_docs/models/receipt_items_table.dart';
 
 part 'app_database.g.dart';
 
-@DriftDatabase(tables: [Receipts, ReceiptItems])
+@DriftDatabase(tables: [Receipts, ReceiptItems], daos: [ReceiptsDao])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? e])
     : super(e ?? driftDatabase(name: 'receipts_docs_db.sqlite'));
@@ -20,22 +21,6 @@ class AppDatabase extends _$AppDatabase {
         await customStatement('PRAGMA foreign_keys = ON;');
       },
     );
-  }
-
-  Future<int> insertReceipt(ReceiptsCompanion receipt) {
-    return into(receipts).insert(receipt);
-  }
-
-  Future<List<Receipt>> getAllReceipts() {
-    return select(receipts).get();
-  }
-
-  Future<bool> updateReceipt(Receipt receipt) {
-    return update(receipts).replace(receipt);
-  }
-
-  Future<int> deleteReceipt(int id) {
-    return (delete(receipts)..where((tbl) => tbl.id.equals(id))).go();
   }
 }
 
