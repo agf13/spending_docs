@@ -18,10 +18,7 @@ class ReceiptsRepository {
   }
 
   Future<Receipt?> getById(int id) {
-    final receiptsSelect = _db.select(_db.receipts);
-    receiptsSelect.where((elem) => elem.id.equals(id));
-
-    return receiptsSelect.getSingleOrNull();
+    return _db.receiptsDao.getById(id);
   }
 
   Future<int> remove(int id) {
@@ -29,9 +26,6 @@ class ReceiptsRepository {
   }
 
   Future<int> getTotalItemsCount() async {
-    final result = await _db
-        .customSelect('SELECT COUNT(ID) AS countColumn FROM receipts')
-        .getSingle();
-    return result.read<int>('countColumn');
+    return _db.receiptsDao.getTotalItemsCount();
   }
 }

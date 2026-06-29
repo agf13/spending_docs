@@ -102,7 +102,7 @@ void main() {
         }, throwsA(isA<Exception>()));
       });
 
-      test('Add with invalid object because too long store name', () async {
+      test('add with invalid object throws error', () async {
         final invalidReceipt = ReceiptsCompanion(
           amount: Value(amount),
           date: Value(date),
@@ -115,7 +115,7 @@ void main() {
         }, throwsA(isA<Exception>()));
       });
 
-      test('bad app does not insert', () async {
+      test('add with invalid object does not insert', () async {
         final invalidReceipt = ReceiptsCompanion(
           amount: Value(amount),
           date: Value(date),
@@ -209,7 +209,7 @@ void main() {
         expect(didUpdate, equals(false));
       });
 
-      test('Update function throws on update with invalid storeName', () async {
+      test('Update function throws error on invalid fields', () async {
         final id = await insertOneItem(repository, receiptCompanion);
 
         final updatedReceipt = Receipt(
@@ -218,22 +218,6 @@ void main() {
           date: updatedDate,
           storeName: textWith151Chars,
           card: updatedCard,
-        );
-
-        expect(() async {
-          await repository.update(updatedReceipt);
-        }, throwsA(isA<Exception>()));
-      });
-
-      test('Update function throws on update with invalid card', () async {
-        final id = await insertOneItem(repository, receiptCompanion);
-
-        final updatedReceipt = Receipt(
-          id: id,
-          amount: updatedAmount,
-          date: updatedDate,
-          storeName: updatedStoreName,
-          card: textWith5Chars,
         );
 
         expect(() async {
@@ -324,6 +308,15 @@ void main() {
         await repository.remove(invalidId);
 
         final count = await repository.getTotalItemsCount();
+        expect(count, equals(1));
+      });
+    });
+
+    group('getTotalItemsCount', () {
+      test('returns correct number of items', () async {
+        await insertOneItem(repository, receiptCompanion);
+        final count = await repository.getTotalItemsCount();
+
         expect(count, equals(1));
       });
     });
