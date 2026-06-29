@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spending_docs/blocs/receipts_list_cubit.dart';
 import 'package:spending_docs/blocs/receipts_list_state.dart';
 import 'package:spending_docs/blocs/side_menu_cubit.dart';
-import 'package:spending_docs/core/utils/toast_helper.dart';
 import 'package:spending_docs/widgets/receipt_filter_form.dart';
 import 'package:spending_docs/widgets/receipt_form.dart';
 import 'package:spending_docs/widgets/receipt_item.dart';
@@ -71,17 +70,20 @@ class _HomePageState extends State<HomePage> {
               if (state is ReceiptsListError) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Column(children: [
-                    // Error message
-                    Text(state.error),
-                    // Spacer
-                    SizedBox(height: 10),
-                    // Refresh Button
-                    ElevatedButton(
-                      onPressed: () => context.read<ReceiptsListCubit>().getItems(),
-                      child: Text('Refresh'),
+                  child: Column(
+                    children: [
+                      // Error message
+                      Text(state.error),
+                      // Spacer
+                      SizedBox(height: 10),
+                      // Refresh Button
+                      ElevatedButton(
+                        onPressed: () =>
+                            context.read<ReceiptsListCubit>().getItems(),
+                        child: Text('Refresh'),
                       ),
-                  ]),
+                    ],
+                  ),
                 );
               }
 

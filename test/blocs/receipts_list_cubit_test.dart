@@ -71,7 +71,7 @@ void main() {
       );
 
       blocTest<ReceiptsListCubit, ReceiptsListState>(
-        'returns error state when getAll() raises an error in repo',
+        'returns ReceiptsListReady with list of elements correctly',
         build: () {
           when(
             () => mockRepository.getAll(),

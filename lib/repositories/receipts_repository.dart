@@ -6,32 +6,26 @@ class ReceiptsRepository {
   ReceiptsRepository(this._db);
 
   Future<int> add(ReceiptsCompanion receipt) {
-    return _db.insertReceipt(receipt);
+    return _db.receiptsDao.insertReceipt(receipt);
   }
 
   Future<bool> update(Receipt receipt) {
-    return _db.updateReceipt(receipt);
+    return _db.receiptsDao.updateReceipt(receipt);
   }
 
   Future<List<Receipt>> getAll() {
-    return _db.getAllReceipts();
+    return _db.receiptsDao.getAllReceipts();
   }
 
   Future<Receipt?> getById(int id) {
-    final receiptsSelect = _db.select(_db.receipts);
-    receiptsSelect.where((elem) => elem.id.equals(id));
-
-    return receiptsSelect.getSingleOrNull();
+    return _db.receiptsDao.getById(id);
   }
 
   Future<int> remove(int id) {
-    return _db.deleteReceipt(id);
+    return _db.receiptsDao.deleteReceipt(id);
   }
 
   Future<int> getTotalItemsCount() async {
-    final result = await _db
-        .customSelect('SELECT COUNT(ID) AS countColumn FROM receipts')
-        .getSingle();
-    return result.read<int>('countColumn');
+    return _db.receiptsDao.getTotalItemsCount();
   }
 }

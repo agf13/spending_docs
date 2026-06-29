@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:spending_docs/models/receipts_table.dart';
+import 'package:spending_docs/database/tables/receipts_table.dart';
 
 class ReceiptItems extends Table {
   // Primary key
