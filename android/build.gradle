@@ -1,0 +1,97 @@
+// Inject a custom fallback method so older plugins don't crash Gradle 9+
+allprojects { project ->
+    // Keep our jcenter bypass trick from before
+    project.repositories.metaClass.jcenter = {
+        mavenCentral()
+    }
+    project.buildscript.repositories.metaClass.jcenter = {
+        mavenCentral()
+    }
+
+    project.repositories {
+        google()
+        mavenCentral()
+        maven { url "https://storage.googleapis.com/download.flutter.io" }
+    }
+
+    // Programmatic Security Firewall
+    project.repositories.whenObjectAdded { repo ->
+        if (repo instanceof org.gradle.api.artifacts.repositories.MavenArtifactRepository) {
+            def url = repo.url.toString()
+            
+            // Explicitly define what external sources are allowed to be added by plugins
+            boolean isAllowed = url.contains("download.flutter.io") || 
+                                url.contains("maven.google.com") || 
+                                url.contains("repo.maven.apache.org") ||
+                                url.contains("repo1.maven.org") || 
+                                url.contains("dl.google.com") ||
+                                url.startsWith("file:") // Safe: Allows local Flutter SDK engine caches on your machine
+            
+            if (!isAllowed) {
+                throw new GradleException(
+                    "Security Violation: The plugin or subproject '${project.name}' " +
+                    "attempted to register an unauthorized repository endpoint: ${url}"
+                )
+            }
+        } else if (repo instanceof org.gradle.api.artifacts.repositories.FlatDirectoryArtifactRepository) {
+            // SAFE: Explicitly allow local flatDir lookups so plugins can load their own bundled .aar files
+        } else {
+            // Block any completely unknown repository structures out of caution
+            throw new GradleException("Security Violation: Unauthorized repository type detected in ${project.name}")
+        }
+    }
+}
+
+// Redirect build directory out of the project source tree
+rootProject.layout.buildDirectory.value(rootProject.layout.buildDirectory.dir("../../build").get())
+
+subprojects {
+    project.layout.buildDirectory.value(rootProject.layout.buildDirectory.dir(project.name))
+}
+
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.layout.buildDirectory
+}
+
+
+/*
+// Inject a custom fallback method so older plugins don't crash Gradle 9+
+allprojects { project ->
+    project.repositories.metaClass.jcenter = {
+        mavenCentral()
+    }
+    project.buildscript.repositories.metaClass.jcenter = {
+        mavenCentral()
+    }
+}
+
+//allprojects {
+//    repositories {
+//        google()
+//        mavenCentral()
+//    }
+//}
+
+val newBuildDir: Directory =
+    rootProject.layout.buildDirectory
+        .dir("../../build")
+        .get()
+rootProject.layout.buildDirectory.value(newBuildDir)
+
+subprojects {
+    val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
+    project.layout.buildDirectory.value(newSubprojectBuildDir)
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register<Delete>("clean") {
+    delete(rootProject.layout.buildDirectory)
+}
+
+*/
