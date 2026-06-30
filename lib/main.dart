@@ -5,6 +5,7 @@ import 'package:spending_docs/blocs/side_menu_cubit.dart';
 import 'package:spending_docs/database/app_database.dart';
 import 'package:spending_docs/repositories/receipts_repository.dart';
 import 'package:spending_docs/screens/homepage.dart';
+import 'package:spending_docs/screens/ocr_screen.dart';
 
 void main() {
   final database = AppDatabase();
@@ -39,7 +40,8 @@ class MyApp extends StatelessWidget {
             },
           ),
         ],
-        child: MaterialApp(home: HomePage()),
+        //child: MaterialApp(home: HomePage()),
+        child: MaterialApp(home: OcrScannerView()),
       ),
     );
   }
