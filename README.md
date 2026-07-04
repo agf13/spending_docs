@@ -1,5 +1,15 @@
 # spending_docs
 
+# Run instructions
+flutter run --dart-define-from-file=config.json
+
+## What you need
+You need to have a config.json file at the root of the flutter project with
+the following structure:
+{
+    "GEMINI_FREE_API_KEY": "actual_key",
+}
+
 # Description
 Project to help me keep track of my receipts
 

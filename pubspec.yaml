@@ -17,6 +17,8 @@ dependencies:
   drift: 2.34.0
   drift_flutter: 0.3.0
   equatable: 2.0.8
+  google_generative_ai: 0.4.7
+  file_picker: 11.0.2
 
 dev_dependencies:
   flutter_test:
