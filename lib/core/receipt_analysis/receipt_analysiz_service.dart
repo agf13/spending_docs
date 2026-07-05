@@ -79,7 +79,10 @@ class ReceiptAnalysizService {
     );
   }
 
-  void analyzeReceiptImage(Uint8List imageBytes, String mimeType) async {
+  Future<Map<String, dynamic>> analyzeReceiptImage(
+    Uint8List imageBytes,
+    String mimeType,
+  ) async {
     try {
       final imagePart = DataPart(mimeType, imageBytes);
       final prompt = getPrompt();
@@ -94,8 +97,7 @@ class ReceiptAnalysizService {
       }
 
       final Map<String, dynamic> parsedJson = json.decode(jsonText);
-      print(parsedJson);
-      //return parsedJson;
+      return parsedJson;
     } catch (e) {
       print('Error during receipt analysis: ${e.toString()}');
       rethrow;
