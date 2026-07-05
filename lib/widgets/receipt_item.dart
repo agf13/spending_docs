@@ -72,5 +72,4 @@ class _ReceiptItemState extends State<ReceiptItem> {
   void _handleDelete(BuildContext context) {
     context.read<ReceiptsListCubit>().removeItem(widget.receipt.id);
   }
-
 }
