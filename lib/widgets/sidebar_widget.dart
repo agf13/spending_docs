@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spending_docs/blocs/side_menu_cubit.dart';
+import 'package:spending_docs/blocs/popup_widget_cubit.dart';
+import 'package:spending_docs/models/popup_menu_enum.dart';
 
-class SideMenu extends StatefulWidget {
-  SideMenu({super.key});
+class SidebarWidget extends StatefulWidget {
+  const SidebarWidget({super.key});
 
-  State<SideMenu> createState() {
-    return _SideMenuState();
+  @override
+  State<SidebarWidget> createState() {
+    return _SidebarWidgetState();
   }
 }
 
-class _SideMenuState extends State<SideMenu> {
+class _SidebarWidgetState extends State<SidebarWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,10 +52,14 @@ class _SideMenuState extends State<SideMenu> {
   }
 
   void onAddPressed(BuildContext context) {
-    context.read<SideMenuCubit>().setSubMenuIndex(1);
+    context.read<PopupWidgetCubit>().setPopupWidgetIndex(
+      PopupMenuEnum.addReceipt,
+    );
   }
 
   void onFilterPressed(BuildContext context) {
-    context.read<SideMenuCubit>().setSubMenuIndex(2);
+    context.read<PopupWidgetCubit>().setPopupWidgetIndex(
+      PopupMenuEnum.filterReceipt,
+    );
   }
 }
