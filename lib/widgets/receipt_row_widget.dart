@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spending_docs/blocs/popup_widget_cubit.dart';
 import 'package:spending_docs/blocs/receipts_list_cubit.dart';
 import 'package:spending_docs/database/app_database.dart' show Receipt;
-import 'package:spending_docs/models/popup_menu_enum.dart';
 
 class ReceiptRowWidget extends StatefulWidget {
   final Receipt receipt;
@@ -24,6 +23,7 @@ class _ReceiptRowWidgetState extends State<ReceiptRowWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       color: Colors.yellowAccent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -32,23 +32,18 @@ class _ReceiptRowWidgetState extends State<ReceiptRowWidget> {
           // Properties of receipt in a clickable area
           clickableList(context),
 
+          // Spacer
+          SizedBox(width: 10),
+
           // Delete button
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              onPressed: () {
-                _handleDelete(context);
-              },
-              icon: Icon(Icons.delete),
-            ),
-          ),
+          deleteButton(context),
         ],
       ),
     );
   }
 
   Widget clickableList(BuildContext context) {
-    return Material(
+    return Expanded(
       child: InkWell(
         onTap: () {
           context.read<PopupWidgetCubit>().setPopupWidgetReceiptItems(
@@ -76,7 +71,21 @@ class _ReceiptRowWidgetState extends State<ReceiptRowWidget> {
   }
 
   Widget propertyDisplay(String property) {
-    return Padding(padding: const EdgeInsets.all(8.0), child: Text(property));
+    return Expanded(
+      child: Padding(padding: const EdgeInsets.all(8.0), child: Text(property)),
+    );
+  }
+
+  Widget deleteButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: IconButton(
+        onPressed: () {
+          _handleDelete(context);
+        },
+        icon: Icon(Icons.delete),
+      ),
+    );
   }
 
   void _handleDelete(BuildContext context) {
