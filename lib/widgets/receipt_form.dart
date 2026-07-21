@@ -121,7 +121,7 @@ class _ReceiptFormState extends State<ReceiptForm> {
             // Picker
             _displayDatePicker(context),
 
-            // Submit button
+            // Buttons
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(

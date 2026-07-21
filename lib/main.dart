@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:spending_docs/blocs/popup_widget_cubit.dart';
+import 'package:spending_docs/blocs/receipt_items_list_cubit.dart';
 import 'package:spending_docs/blocs/receipts_list_cubit.dart';
-import 'package:spending_docs/blocs/side_menu_cubit.dart';
 import 'package:spending_docs/database/app_database.dart';
+import 'package:spending_docs/repositories/receipt_items_repository.dart';
 import 'package:spending_docs/repositories/receipts_repository.dart';
-import 'package:spending_docs/screens/homepage.dart';
+import 'package:spending_docs/screens/homepage_screen.dart';
 
 void main() {
   final database = AppDatabase();
@@ -14,7 +16,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final AppDatabase _database;
-  MyApp({super.key, required this._database});
+  const MyApp({super.key, required this._database});
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +26,19 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<ReceiptsRepository>(
           create: (_) => ReceiptsRepository(_database),
         ),
+
+        //ReceiptItemsRepository
+        RepositoryProvider<ReceiptItemsRepository>(
+          create: (_) => ReceiptItemsRepository(_database),
+        ),
       ],
 
       child: MultiBlocProvider(
         providers: [
-          // SideMenuCubit injection in context
-          BlocProvider<SideMenuCubit>(create: (context) => SideMenuCubit()),
+          // PopupWidgetCubit injection in context
+          BlocProvider<PopupWidgetCubit>(
+            create: (context) => PopupWidgetCubit(),
+          ),
 
           // ReceiptsListCubit (to handle the list of receipts)
           BlocProvider<ReceiptsListCubit>(
@@ -38,8 +47,16 @@ class MyApp extends StatelessWidget {
               return ReceiptsListCubit(repository)..getItems();
             },
           ),
+
+          // ReceiptItemsListCubit (to handle the list of items from a receipt)
+          BlocProvider<ReceiptItemsListCubit>(
+            create: (context) {
+              final repository = context.read<ReceiptItemsRepository>();
+              return ReceiptItemsListCubit(repository)..getItems();
+            },
+          ),
         ],
-        child: MaterialApp(home: HomePage()),
+        child: MaterialApp(home: HomepageScreen()),
       ),
     );
   }
