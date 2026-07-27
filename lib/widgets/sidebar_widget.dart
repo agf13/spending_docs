@@ -20,22 +20,42 @@ class _SidebarWidgetState extends State<SidebarWidget> {
       child: Column(
         children: [
           // Add receipt button
-          _menuButton(
-            onPressed: () {
-              onAddPressed(context);
-            },
-            icon: Icon(Icons.add),
-          ),
+          _addReceiptButton(context),
 
           // Filter button
-          _menuButton(
-            onPressed: () {
-              onFilterPressed(context);
-            },
-            icon: Icon(Icons.filter_alt),
-          ),
+          _filterButton(context),
+
+          // Scan button
+          _scanButton(context),
         ],
       ),
+    );
+  }
+
+  Widget _addReceiptButton(BuildContext context) {
+    return _menuButton(
+      onPressed: () {
+        _onAddPressed(context);
+      },
+      icon: Icon(Icons.add),
+    );
+  }
+
+  Widget _filterButton(BuildContext context) {
+    return _menuButton(
+      onPressed: () {
+        _onFilterPressed(context);
+      },
+      icon: Icon(Icons.filter_alt),
+    );
+  }
+
+  Widget _scanButton(BuildContext context) {
+    return _menuButton(
+      onPressed: () {
+        _onScanPressed(context);
+      },
+      icon: Icon(Icons.camera),
     );
   }
 
@@ -51,15 +71,21 @@ class _SidebarWidgetState extends State<SidebarWidget> {
     );
   }
 
-  void onAddPressed(BuildContext context) {
+  void _onAddPressed(BuildContext context) {
     context.read<PopupWidgetCubit>().setPopupWidgetIndex(
       PopupMenuEnum.addReceipt,
     );
   }
 
-  void onFilterPressed(BuildContext context) {
+  void _onFilterPressed(BuildContext context) {
     context.read<PopupWidgetCubit>().setPopupWidgetIndex(
       PopupMenuEnum.filterReceipt,
+    );
+  }
+
+  void _onScanPressed(BuildContext context) {
+    context.read<PopupWidgetCubit>().setPopupWidgetIndex(
+      PopupMenuEnum.receiptScan,
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:spending_docs/widgets/receipt_filter_form.dart';
 import 'package:spending_docs/widgets/receipt_form.dart';
 import 'package:spending_docs/widgets/receipt_items_popup.dart';
 import 'package:spending_docs/widgets/receipt_row_widget.dart';
+import 'package:spending_docs/widgets/receipt_scan_widget.dart';
 import 'package:spending_docs/widgets/sidebar_widget.dart';
 
 class HomepageScreen extends StatefulWidget {
@@ -120,6 +121,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
             closePopupWidgetDisplayed(context);
           },
         ), // Set filter form
+        PopupMenuEnum.receiptScan => ReceiptScanWidget(),
       };
     } else if (popupWidgetState is PopupWidgetReceiptItemActive) {
       // handle popup with receipt id
