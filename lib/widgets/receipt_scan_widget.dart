@@ -67,7 +67,8 @@ class _ReceiptScanWidgetState extends State<ReceiptScanWidget> {
             // Separator
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 200),
-              child: Divider(color: Colors.red)),
+              child: Divider(color: Colors.red),
+            ),
 
             // Receipt items
             ...receiptItemsAsText(context),
@@ -118,6 +119,7 @@ class _ReceiptScanWidgetState extends State<ReceiptScanWidget> {
 
     if (json != null) {
       await insertItems(json, context);
+      await refreshLists(context);
     }
   }
 
