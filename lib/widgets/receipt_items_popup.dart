@@ -53,6 +53,7 @@ class _ReceiptItemsPopupState extends State<ReceiptItemsPopup> {
               final List<ReceiptItem> filteredItems = items
                   .where((item) => item.receiptId == widget.receiptId)
                   .toList();
+              print('Filtered items: ${filteredItems}');
               return _listWidget(filteredItems);
             }
 

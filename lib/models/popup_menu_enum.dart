@@ -1,1 +1,1 @@
-enum PopupMenuEnum { empty, addReceipt, filterReceipt }
+enum PopupMenuEnum { empty, addReceipt, filterReceipt, receiptScan }
