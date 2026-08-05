@@ -1,4 +1,4 @@
-import 'package:spending_docs/database/app_database.dart';
+import 'package:spending_docs/core/database/app_database.dart';
 
 class ReceiptItemsRepository {
   final AppDatabase _db;

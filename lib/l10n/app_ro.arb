@@ -1,0 +1,15 @@
+{
+  "language": "Romana",
+  "helloWorld": "Salut lume!",
+  "multiLanguage": "Limbi multiple",
+
+  "homeTitle": "Acasa",
+  "homeDataFetchError": "Eroare la incarcarea datelor",
+  
+  "appBarNavigationHome": "Acasa",
+  "appBarNavigationScan": "Scaneaza",
+  "appBarNavigationSearch": "Cauta",
+
+  "receiptCardMenuEdit": "Editeaza",
+  "receiptCardMenuDelete": "Sterge"
+}

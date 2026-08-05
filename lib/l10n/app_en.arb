@@ -1,0 +1,26 @@
+{
+  "language": "English",
+  "@language": {
+    "description": "The current language"
+  },
+
+  "helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "A programmer's greeting"
+  },
+
+  "multiLanguage": "Multi language",
+  "@multiLanguage": {
+    "description": "App title"
+  },
+
+  "homeTitle": "Home",
+  "homeDataFetchError": "Error loading data",
+  
+  "appBarNavigationHome": "Home",
+  "appBarNavigationScan": "Scan",
+  "appBarNavigationSearch": "Search",
+
+  "receiptCardMenuEdit": "Edit",
+  "receiptCardMenuDelete": "Delete"
+}

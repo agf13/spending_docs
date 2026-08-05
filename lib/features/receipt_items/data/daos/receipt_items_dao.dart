@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
-import 'package:spending_docs/database/app_database.dart';
-import 'package:spending_docs/database/tables/receipt_items_table.dart';
-import 'package:spending_docs/database/tables/receipts_table.dart';
+import 'package:spending_docs/core/database/app_database.dart';
+import 'package:spending_docs/features/receipt_items/data/tables/receipt_items_table.dart';
+import 'package:spending_docs/features/receipts/data/tables/receipts_table.dart';
 
 part 'receipt_items_dao.g.dart';
 

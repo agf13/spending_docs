@@ -1,9 +1,9 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import 'package:spending_docs/database/daos/receipt_items_dao.dart';
-import 'package:spending_docs/database/daos/receipts_dao.dart';
-import 'package:spending_docs/database/tables/receipt_items_table.dart';
-import 'package:spending_docs/database/tables/receipts_table.dart';
+import 'package:spending_docs/features/receipt_items/data/daos/receipt_items_dao.dart';
+import 'package:spending_docs/features/receipt_items/data/tables/receipt_items_table.dart';
+import 'package:spending_docs/features/receipts/data/daos/receipts_dao.dart';
+import 'package:spending_docs/features/receipts/data/tables/receipts_table.dart';
 
 part 'app_database.g.dart';
 
