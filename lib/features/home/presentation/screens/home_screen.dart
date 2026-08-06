@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spending_docs/features/home/presentation/widgets/receipt_list_view.dart';
+import 'package:spending_docs/features/receipts/presentation/widgets/new_receipt_form.dart';
 import 'package:spending_docs/l10n/app_localizations.dart'
     show AppLocalizations;
 
@@ -66,6 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void handleAdd() {
-    print('Button to add pressed');
+    NewReceiptForm.showFormPopup(context);
   }
 }

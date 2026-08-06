@@ -82,45 +82,45 @@ class _ReceiptRowState extends State<ReceiptRow> {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Store name and price
-          storeAndPrice(),
+          PriceAndStore(),
 
           // Card used and date
-          cardAndDate(),
+          DateAndCard(),
         ],
       ),
     );
   }
 
-  Widget storeAndPrice() {
+  Widget PriceAndStore() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // Store name
-        Expanded(child: detailBold(widget.receipt.storeName ?? '')),
+        // Amount total
+        detailBold(widget.receipt.amount.toString()),
 
         // Spacer
         SizedBox(width: 5),
 
-        // Amount total
-        detailBold(widget.receipt.amount.toString()),
+        // Store name
+        Expanded(child: detailBold(widget.receipt.storeName ?? '')),
       ],
     );
   }
 
-  Widget cardAndDate() {
+  Widget DateAndCard() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // Card number or if it's cash
-        detail(widget.receipt.card ?? ''),
+        // Date
+        Expanded(child: detail(dateFormat(widget.receipt.date))),
 
         // Spacer
         SizedBox(width: 5),
 
-        // Date
-        Expanded(child: detail(dateFormat(widget.receipt.date))),
+        // Card number or if it's cash
+        detail(widget.receipt.card ?? ''),
       ],
     );
   }
@@ -128,6 +128,7 @@ class _ReceiptRowState extends State<ReceiptRow> {
   Widget detailBold(String text) {
     return Text(
       text,
+      textAlign: TextAlign.right,
       overflow: TextOverflow.ellipsis,
       style: textTheme.titleMedium?.copyWith(
         color: colorScheme.onSurface,
@@ -139,7 +140,6 @@ class _ReceiptRowState extends State<ReceiptRow> {
   Widget detail(String text) {
     return Text(
       text,
-      textAlign: TextAlign.right,
       overflow: TextOverflow.ellipsis,
       style: textTheme.bodyMedium?.copyWith(
         color: colorScheme.onSurfaceVariant,
