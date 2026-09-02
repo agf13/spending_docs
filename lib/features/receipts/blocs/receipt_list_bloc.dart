@@ -13,6 +13,7 @@ class ReceiptListBloc extends Bloc<ReceiptEvent, ReceiptState> {
 
   ReceiptListBloc({required this.repository}) : super(ReceiptState()) {
     on<ReceiptFetched>(onNextPage, transformer: droppable());
+    on<ReceiptRefresh>(onRefresh, transformer: droppable());
   }
 
   Future<void> onNextPage(
@@ -35,5 +36,22 @@ class ReceiptListBloc extends Bloc<ReceiptEvent, ReceiptState> {
     } catch (e) {
       return emit(state.copyWith(status: ReceiptStatus.failure));
     }
+  }
+
+  Future<void> onRefresh(
+    ReceiptRefresh event,
+    Emitter<ReceiptState> emit,
+  ) async {
+    // Reset the state
+    emit(
+      state.copyWith(
+        status: ReceiptStatus.ready,
+        hasReachedMax: false,
+        receiptList: [],
+      ),
+    );
+
+    // Fetch first page
+    await onNextPage(ReceiptFetched(), emit);
   }
 }

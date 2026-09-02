@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:spending_docs/l10n/app_localizations.dart';
 
 class Receipts extends Table {
   IntColumn get id => integer().autoIncrement()();

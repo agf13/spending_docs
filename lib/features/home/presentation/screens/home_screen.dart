@@ -1,6 +1,15 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
+import 'package:spending_docs/features/filter/presentation/widgets/filter.dart';
 import 'package:spending_docs/features/home/presentation/widgets/receipt_list_view.dart';
-import 'package:spending_docs/features/receipts/presentation/widgets/new_receipt_form.dart';
+import 'package:spending_docs/features/receipts/presentation/widgets/receipt_form.dart';
+import 'package:spending_docs/features/scan/cubits/receipt_scan_image_cubit.dart';
+import 'package:spending_docs/features/scan/data/models/scanned_receipt_dto.dart';
+import 'package:spending_docs/features/scan/presentation/utils/image_picker_util.dart';
+import 'package:spending_docs/features/scan/presentation/widgets/scan_form.dart';
 import 'package:spending_docs/l10n/app_localizations.dart'
     show AppLocalizations;
 
@@ -12,12 +21,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex =
+      0; // For the NagivationBar to handle selected button style
+  int _currentPage = 0; // To handle the correct widget to show
+  List<Widget> widgetList = [
+    ReceiptListView(),
+    FilterWidget(),
+  ]; // A list of widgets to show using _currentPage as index
+
+  final ImagePickerUtil _imagePickerUtil = ImagePickerUtil();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(),
       body: body(),
-      bottomNavigationBar: bottomNavigationBar(),
+      bottomNavigationBar: navigationBar(),
       floatingActionButton: floatingActionButton(),
     );
   }
@@ -27,36 +46,86 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget body() {
-    return ReceiptListView();
+    return IndexedStack(index: _currentPage, children: widgetList);
   }
 
-  BottomNavigationBar bottomNavigationBar() {
-    return BottomNavigationBar(
-      onTap: handleNavigationButton,
-      items: [homeScreenButton(), scanButton(), searchScreenButton()],
+  NavigationBar navigationBar() {
+    return NavigationBar(
+      onDestinationSelected: _handleDestionationChanged,
+      selectedIndex: _selectedIndex,
+      destinations: [homeScreenButton(), scanButton(), searchScreenButton()],
+      labelTextStyle: _getNagivationLabelStyle(),
     );
   }
 
-  void handleNavigationButton(int index) {
-    print('button $index clicked');
+  WidgetStateProperty<TextStyle> _getNagivationLabelStyle() {
+    return WidgetStateProperty.resolveWith<TextStyle>((states) {
+      final isSelected = states.contains(WidgetState.selected);
+      final textBodyLarge = Theme.of(context).textTheme.bodyLarge?.fontSize;
+      final textBodyMedium = Theme.of(context).textTheme.bodyMedium?.fontSize;
+
+      return TextStyle(
+        fontSize: isSelected ? textBodyLarge : textBodyMedium,
+        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+      );
+    });
   }
 
-  BottomNavigationBarItem homeScreenButton() {
-    return BottomNavigationBarItem(
+  // Custom mapping of navigation bar itens to screens
+  void _handleDestionationChanged(int index) async {
+    if (index == 0) {
+      setState(() {
+        _selectedIndex = index;
+        _currentPage = 0;
+      });
+    } else if (index == 1) {
+      setState(() {
+        _selectedIndex = index;
+      });
+
+      // Scan and extract
+      final String? imagePath = await _imagePickerUtil.startScanProcess(
+        context,
+      );
+      if (imagePath != null && imagePath.isNotEmpty) {
+        Uint8List imageBytes = await _getImageBytesFromPath(imagePath);
+        context.read<ReceiptScanImageCubit>().processImage(imageBytes);
+        ScanForm.showScanResultPopup(context: context);
+      }
+
+      if (imagePath != null) {
+        print('we can process the image: $imagePath');
+      }
+
+      setState(() {
+        _selectedIndex = 0;
+        _currentPage = 0;
+      });
+    } else if (index == 2) {
+      // The third button maps to the second screen
+      setState(() {
+        _selectedIndex = index;
+        _currentPage = 1;
+      });
+    }
+  }
+
+  NavigationDestination homeScreenButton() {
+    return NavigationDestination(
       icon: Icon(Icons.home),
       label: AppLocalizations.of(context)!.appBarNavigationHome,
     );
   }
 
-  BottomNavigationBarItem scanButton() {
-    return BottomNavigationBarItem(
+  NavigationDestination scanButton() {
+    return NavigationDestination(
       icon: Icon(Icons.camera_sharp),
       label: AppLocalizations.of(context)!.appBarNavigationScan,
     );
   }
 
-  BottomNavigationBarItem searchScreenButton() {
-    return BottomNavigationBarItem(
+  NavigationDestination searchScreenButton() {
+    return NavigationDestination(
       icon: Icon(Icons.search),
       label: AppLocalizations.of(context)!.appBarNavigationSearch,
     );
@@ -67,6 +136,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void handleAdd() {
-    NewReceiptForm.showFormPopup(context);
+    ReceiptForm.showFormPopup(context: context);
+  }
+
+  Future<Uint8List> _getImageBytesFromPath(String imagePath) async {
+    final File imageFile = File(imagePath);
+    final Uint8List bytes = await imageFile.readAsBytes();
+    return bytes;
   }
 }

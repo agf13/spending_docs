@@ -22,5 +22,31 @@
   "appBarNavigationSearch": "Search",
 
   "receiptCardMenuEdit": "Edit",
-  "receiptCardMenuDelete": "Delete"
+  "receiptCardMenuDelete": "Delete",
+
+  "newReceiptFromTitle": "New Receipt",
+  "newReceiptFormSubtitle": "Log a new receipt in seconds",
+  "newReceiptFormLabelStoreName": "Store name",
+  "newReceiptFormLabelAmount": "Amount",
+  "newReceiptFormLabelDate": "Date",
+  "newReceiptFormLabelCardOrCash": "Card or cash",
+  "newReceiptFormCancel": "Cancel",
+  "newReceiptFormHintStoreName": "Supermarket BuyOnSale",
+  "newReceiptFormHintAmount": "123.45",
+  "newReceiptFormHintDate": "...",
+  "newReceiptFormHintCardOrCash": "1234",
+  "newReceiptFormCancel": "Cancel",
+  "newReceiptFormSave": "Save",
+  "newReceiptFormValidateAmountNotANumber": "Should be a number",
+  "newReceiptFormValidateCardInvalidCardValue": "Should be exactly 4 digits or the word 'cash'",
+  "newReceiptFormValidateCardInvalidCardNumber": "Should only contain 4 digits or the word 'cash'",
+  "newReceiptFromValidateUnexpectedCase": "Unexpected case",
+  "newReceiptFormValidateDateDateNotChosen": "Please chose a date",
+
+  "editReceiptFormTitle": "Edit receipt",
+  "editReceiptFormSubtitle": "Edit your receipt details",
+
+  "confirmationPopupDeleteReceiptTile": "Are you sure?",
+  "confirmationPopupDelete": "Delete",
+  "confirmationPopupCancel": "Cancel"
 }

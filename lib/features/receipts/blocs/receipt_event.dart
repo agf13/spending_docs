@@ -8,3 +8,4 @@ sealed class ReceiptEvent extends Equatable {
 }
 
 class ReceiptFetched extends ReceiptEvent {}
+class ReceiptRefresh extends ReceiptEvent {}

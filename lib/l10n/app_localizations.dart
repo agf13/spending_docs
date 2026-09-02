@@ -157,6 +157,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete'**
   String get receiptCardMenuDelete;
+
+  /// No description provided for @newReceiptFromTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New Receipt'**
+  String get newReceiptFromTitle;
+
+  /// No description provided for @newReceiptFormSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log a new receipt in seconds'**
+  String get newReceiptFormSubtitle;
+
+  /// No description provided for @newReceiptFormLabelStoreName.
+  ///
+  /// In en, this message translates to:
+  /// **'Store name'**
+  String get newReceiptFormLabelStoreName;
+
+  /// No description provided for @newReceiptFormLabelAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get newReceiptFormLabelAmount;
+
+  /// No description provided for @newReceiptFormLabelDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get newReceiptFormLabelDate;
+
+  /// No description provided for @newReceiptFormLabelCardOrCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Card or cash'**
+  String get newReceiptFormLabelCardOrCash;
+
+  /// No description provided for @newReceiptFormCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get newReceiptFormCancel;
+
+  /// No description provided for @newReceiptFormHintStoreName.
+  ///
+  /// In en, this message translates to:
+  /// **'Supermarket BuyOnSale'**
+  String get newReceiptFormHintStoreName;
+
+  /// No description provided for @newReceiptFormHintAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'123.45'**
+  String get newReceiptFormHintAmount;
+
+  /// No description provided for @newReceiptFormHintDate.
+  ///
+  /// In en, this message translates to:
+  /// **'...'**
+  String get newReceiptFormHintDate;
+
+  /// No description provided for @newReceiptFormHintCardOrCash.
+  ///
+  /// In en, this message translates to:
+  /// **'1234'**
+  String get newReceiptFormHintCardOrCash;
+
+  /// No description provided for @newReceiptFormSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get newReceiptFormSave;
+
+  /// No description provided for @newReceiptFormValidateAmountNotANumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Should be a number'**
+  String get newReceiptFormValidateAmountNotANumber;
+
+  /// No description provided for @newReceiptFormValidateCardInvalidCardValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Should be exactly 4 digits or the word \'cash\''**
+  String get newReceiptFormValidateCardInvalidCardValue;
+
+  /// No description provided for @newReceiptFormValidateCardInvalidCardNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Should only contain 4 digits or the word \'cash\''**
+  String get newReceiptFormValidateCardInvalidCardNumber;
+
+  /// No description provided for @newReceiptFromValidateUnexpectedCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected case'**
+  String get newReceiptFromValidateUnexpectedCase;
+
+  /// No description provided for @newReceiptFormValidateDateDateNotChosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Please chose a date'**
+  String get newReceiptFormValidateDateDateNotChosen;
+
+  /// No description provided for @editReceiptFormTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit receipt'**
+  String get editReceiptFormTitle;
+
+  /// No description provided for @editReceiptFormSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit your receipt details'**
+  String get editReceiptFormSubtitle;
+
+  /// No description provided for @confirmationPopupDeleteReceiptTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure?'**
+  String get confirmationPopupDeleteReceiptTile;
+
+  /// No description provided for @confirmationPopupDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get confirmationPopupDelete;
+
+  /// No description provided for @confirmationPopupCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get confirmationPopupCancel;
 }
 
 class _AppLocalizationsDelegate

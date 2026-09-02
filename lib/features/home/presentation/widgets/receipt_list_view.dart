@@ -70,6 +70,10 @@ class _ReceiptListViewState extends State<ReceiptListView> {
     return ReceiptRow(receipt: state.receiptList[index]);
   }
 
+  Widget lastElementInList() {
+    return Column(children: [loadingSpinner(), SizedBox(height: 100)]);
+  }
+
   void onScroll() {
     if (isBottom) {
       context.read<ReceiptListBloc>().add(ReceiptFetched());

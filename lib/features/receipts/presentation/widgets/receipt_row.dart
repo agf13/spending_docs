@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
 import 'package:spending_docs/core/database/app_database.dart' show Receipt;
+import 'package:spending_docs/features/receipts/data/repositories/receipts_repository.dart'
+    show ReceiptsRepository;
+import 'package:spending_docs/features/receipts/presentation/widgets/receipt_delete_confirm.dart';
+import 'package:spending_docs/features/receipts/presentation/widgets/receipt_form.dart';
 import 'package:spending_docs/l10n/app_localizations.dart';
 
 class ReceiptRow extends StatefulWidget {
@@ -169,7 +174,7 @@ class _ReceiptRowState extends State<ReceiptRow> {
   PopupMenuItem<String> editButton(BuildContext context) {
     return PopupMenuItem(
       value: 'Edit',
-      onTap: handleEdit,
+      onTap: () => handleEdit(widget.receipt),
       child: Row(
         children: [
           Icon(Icons.edit),
@@ -194,12 +199,15 @@ class _ReceiptRowState extends State<ReceiptRow> {
     );
   }
 
-  void handleEdit() {
-    print('edit clicked');
+  void handleEdit(Receipt? receipt) {
+    ReceiptForm.showFormPopup(context: context, receipt: receipt);
   }
 
   void handleDelete() {
-    print('delete clicked');
+    ReceiptDeleteConfirm.showDeletePopup(
+      context: context,
+      receiptId: widget.receipt.id,
+    );
   }
 
   String dateFormat(DateTime date) {
