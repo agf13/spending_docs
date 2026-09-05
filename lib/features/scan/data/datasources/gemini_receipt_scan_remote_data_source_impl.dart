@@ -28,7 +28,7 @@ class GeminiReceiptScanRemoteDataSourceImpl
   GenerativeModel _getModel() {
     return GenerativeModel(
       apiKey: apiKey,
-      model: 'gemini-3.6-flash',
+      model: 'gemini-3.5-flash',
       generationConfig: _getGenerationConfig(),
     );
   }

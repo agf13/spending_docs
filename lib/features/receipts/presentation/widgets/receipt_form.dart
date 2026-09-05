@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spending_docs/core/database/app_database.dart'
     show ReceiptsCompanion, Receipt;
 import 'package:spending_docs/features/common/presentation/widgets/dateTimePicker.dart';
+import 'package:spending_docs/features/common/presentation/widgets/generic_input_field.dart';
 import 'package:spending_docs/features/receipts/blocs/receipt_list_bloc.dart';
 import 'package:spending_docs/features/receipts/data/repositories/receipts_repository.dart';
 import 'package:spending_docs/features/receipts/domain/validators/receipt_validator.dart';
@@ -158,7 +159,7 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
           mainAxisSize: MainAxisSize.min,
           children: [
             // StoreName input
-            inputField(
+            GenericInputField(
               labelText: AppLocalizations.of(
                 context,
               )!.newReceiptFormLabelStoreName,
@@ -166,19 +167,19 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
                 context,
               )!.newReceiptFormHintStoreName,
               iconData: Icons.store,
-              validateFunction: ReceiptValidator.validateStoreName,
+              validateFunction: ReceiptValidator.validateStoreNameError,
               onSaved: onStoreNameSaved,
               initialValue: widget.receipt?.storeName,
             ),
 
             // Amount input
-            inputField(
+            GenericInputField(
               labelText: AppLocalizations.of(
                 context,
               )!.newReceiptFormLabelAmount,
               hintText: AppLocalizations.of(context)!.newReceiptFormHintAmount,
               iconData: Icons.money,
-              validateFunction: ReceiptValidator.validateAmount,
+              validateFunction: ReceiptValidator.validateAmountError,
               onSaved: onAmountSaved,
               keyboardType: const TextInputType.numberWithOptions(
                 decimal: true,
@@ -187,11 +188,11 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
             ),
 
             // Date input
-            inputField(
+            GenericInputField(
               labelText: AppLocalizations.of(context)!.newReceiptFormLabelDate,
               hintText: AppLocalizations.of(context)!.newReceiptFormHintDate,
               iconData: Icons.calendar_today,
-              validateFunction: ReceiptValidator.validateDate,
+              validateFunction: ReceiptValidator.validateDateError,
               onSaved: onDateSaved,
               sufixIconButton: dateTimeIconButton(),
               controller: _dateController,
@@ -199,7 +200,7 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
             ),
 
             // Card input
-            inputField(
+            GenericInputField(
               labelText: AppLocalizations.of(
                 context,
               )!.newReceiptFormLabelCardOrCash,
@@ -207,47 +208,12 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
                 context,
               )!.newReceiptFormHintCardOrCash,
               iconData: Icons.card_travel,
-              validateFunction: ReceiptValidator.validateCard,
+              validateFunction: ReceiptValidator.validateCardError,
               onSaved: onCardSaved,
               initialValue: widget.receipt?.card,
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget inputField({
-    required String labelText,
-    required String hintText,
-    required IconData iconData,
-    required Function(String) validateFunction,
-    required Function(String) onSaved,
-    TextInputType? keyboardType,
-    Widget? sufixIconButton,
-    TextEditingController? controller,
-    String? initialValue,
-    bool readOnly = false,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          label(labelText),
-          inputWidget(
-            hintText: hintText,
-            icon: leftIcon(iconData),
-            validateFunction: validateFunction,
-            onSaved: onSaved,
-            keyboardType: keyboardType,
-            sufixIconButton: sufixIconButton,
-            controller: controller,
-            initialValue: initialValue,
-            readOnly: readOnly,
-          ),
-        ],
       ),
     );
   }
@@ -266,47 +232,6 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
     return Text(
       text,
       style: textTheme.titleSmall?.copyWith(color: colorScheme.onSurface),
-    );
-  }
-
-  Widget inputWidget({
-    required String hintText,
-    required Widget icon,
-    required Function(String) validateFunction,
-    required Function(String) onSaved,
-    TextInputType? keyboardType,
-    Widget? sufixIconButton,
-    TextEditingController? controller,
-    String? initialValue,
-    bool readOnly = false,
-  }) {
-    return SizedBox(
-      width: _fieldWidth,
-      child: TextFormField(
-        readOnly: readOnly,
-        initialValue: initialValue,
-        keyboardType: keyboardType,
-        controller: controller,
-        decoration: InputDecoration(
-          hintText: hintText,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.outline,
-            ),
-          ),
-          filled: true,
-          fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
-          prefixIcon: icon,
-          suffixIcon: sufixIconButton,
-          errorMaxLines: 5,
-        ),
-        validator: (value) => validateField(
-          validateFunction: validateFunction,
-          value: value ?? '',
-        ),
-        onSaved: (value) => onSaved(value ?? ''),
-      ),
     );
   }
 
@@ -332,7 +257,7 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
     required Function(String) validateFunction,
     required String value,
   }) {
-    final result = validateFunction(value);
+    final result = validateFunction(value.isEmpty ? '' : value);
     if (result == ReceiptValidationStatus.success) return null;
 
     switch (result) {
