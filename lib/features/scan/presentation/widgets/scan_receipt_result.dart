@@ -265,7 +265,7 @@ class _ScanReceiptResultState extends State<ScanReceiptResult> {
               child: GenericInputField(
                 labelText: '',
                 hintText: '',
-                iconData: Icons.money_off,
+                iconData: Icons.attach_money,
                 validateFunction: ReceiptItemValidator.validatePriceError,
                 onSaved: (_) {},
                 controller: priceController,
