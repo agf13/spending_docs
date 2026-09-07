@@ -1,4 +1,4 @@
-import 'package:spending_docs/database/app_database.dart';
+import 'package:spending_docs/core/database/app_database.dart';
 
 class ReceiptsRepository {
   final AppDatabase _db;
@@ -19,6 +19,10 @@ class ReceiptsRepository {
 
   Future<Receipt?> getById(int id) {
     return _db.receiptsDao.getById(id);
+  }
+
+  Future<List<Receipt>> getLimited(int offset, int count) {
+    return _db.receiptsDao.getLimited(offset, count);
   }
 
   Future<int> remove(int id) {

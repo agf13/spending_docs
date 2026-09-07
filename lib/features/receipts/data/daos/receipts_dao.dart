@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import 'package:spending_docs/database/app_database.dart';
-import 'package:spending_docs/database/tables/receipts_table.dart';
+import 'package:spending_docs/core/database/app_database.dart';
+import 'package:spending_docs/features/receipts/data/tables/receipts_table.dart';
 
 part 'receipts_dao.g.dart';
 
@@ -22,6 +22,13 @@ class ReceiptsDao extends DatabaseAccessor<AppDatabase>
 
   Future<List<Receipt>> getAllReceipts() {
     return select(receipts).get();
+  }
+
+  Future<List<Receipt>> getLimited(int offset, int count) {
+    final receiptsSelect = select(receipts);
+    receiptsSelect.limit(count, offset: offset);
+
+    return receiptsSelect.get();
   }
 
   Future<bool> updateReceipt(Receipt receipt) {
