@@ -31,6 +31,8 @@
   "newReceiptFromValidateUnexpectedCase": "Eroare neasteptata",
   "newReceiptFormValidateDateDateNotChosen": "Alege o data",
 
+  "newReceiptItemFormValidateAmountNotANumber": "Trebuie sa fie un numar",
+
   "editReceiptFormTitle": "Editeaza bon",
   "editReceiptFormSubtitle": "Aici poti edita bonul",
 

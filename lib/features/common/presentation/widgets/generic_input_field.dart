@@ -11,6 +11,7 @@ class GenericInputField extends StatefulWidget {
   final TextEditingController? controller;
   final String? initialValue;
   final bool readOnly;
+  final Function(String?)? extraValueValidation;
 
   const GenericInputField({
     super.key,
@@ -23,6 +24,7 @@ class GenericInputField extends StatefulWidget {
     this.sufixIconButton,
     this.controller,
     this.initialValue,
+    this.extraValueValidation,
     this.readOnly = false,
   });
 
@@ -33,49 +35,53 @@ class GenericInputField extends StatefulWidget {
 class _GenericInputFieldState extends State<GenericInputField> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Label of the text field
-          label(widget.labelText),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Label of the text field
+        label(widget.labelText),
 
-          // The text field
-          SizedBox(
-            child: TextFormField(
-              readOnly: widget.readOnly,
-              initialValue: widget.initialValue,
-              keyboardType: widget.keyboardType,
-              controller: widget.controller,
-              decoration: InputDecoration(
-                hintText: widget.hintText,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
+        // The text field
+        SizedBox(
+          child: TextFormField(
+            readOnly: widget.readOnly,
+            initialValue: widget.initialValue,
+            keyboardType: widget.keyboardType,
+            controller: widget.controller,
+            decoration: InputDecoration(
+              hintText: widget.hintText,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.outline,
                 ),
-                filled: true,
-                fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
-                prefixIcon: Icon(widget.iconData),
-                suffixIcon: widget.sufixIconButton,
-                errorMaxLines: 5,
               ),
-              validator: (value) {
-                return widget.validateFunction(value, context);
-              },
-              onSaved: (value) => widget.onSaved(value ?? ''),
+              filled: true,
+              fillColor: Theme.of(context).colorScheme.surfaceContainerLow,
+              prefixIcon: Icon(widget.iconData),
+              suffixIcon: widget.sufixIconButton,
+              errorMaxLines: 5,
             ),
+            validator: (value) {
+              String? errorText = widget.validateFunction(value, context);
+              if (errorText == null && widget.extraValueValidation != null) {
+                errorText = widget.extraValueValidation!(value);
+              }
+
+              return errorText;
+            },
+            onSaved: (value) => widget.onSaved(value ?? ''),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget label(String text) {
+    if (text.isEmpty) return SizedBox.shrink();
+
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 

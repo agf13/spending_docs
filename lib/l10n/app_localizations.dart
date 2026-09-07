@@ -260,6 +260,12 @@ abstract class AppLocalizations {
   /// **'Please chose a date'**
   String get newReceiptFormValidateDateDateNotChosen;
 
+  /// No description provided for @newReceiptItemFormValidateAmountNotANumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Should be a number'**
+  String get newReceiptItemFormValidateAmountNotANumber;
+
   /// No description provided for @editReceiptFormTitle.
   ///
   /// In en, this message translates to:

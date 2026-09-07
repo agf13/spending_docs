@@ -93,6 +93,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get newReceiptFormValidateDateDateNotChosen => 'Alege o data';
 
   @override
+  String get newReceiptItemFormValidateAmountNotANumber =>
+      'Trebuie sa fie un numar';
+
+  @override
   String get editReceiptFormTitle => 'Editeaza bon';
 
   @override

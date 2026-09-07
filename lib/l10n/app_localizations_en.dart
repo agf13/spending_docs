@@ -92,6 +92,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newReceiptFormValidateDateDateNotChosen => 'Please chose a date';
 
   @override
+  String get newReceiptItemFormValidateAmountNotANumber => 'Should be a number';
+
+  @override
   String get editReceiptFormTitle => 'Edit receipt';
 
   @override

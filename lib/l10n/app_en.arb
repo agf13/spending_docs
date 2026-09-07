@@ -43,6 +43,8 @@
   "newReceiptFromValidateUnexpectedCase": "Unexpected case",
   "newReceiptFormValidateDateDateNotChosen": "Please chose a date",
 
+  "newReceiptItemFormValidateAmountNotANumber": "Should be a number",
+
   "editReceiptFormTitle": "Edit receipt",
   "editReceiptFormSubtitle": "Edit your receipt details",
 

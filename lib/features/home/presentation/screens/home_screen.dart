@@ -7,7 +7,6 @@ import 'package:spending_docs/features/filter/presentation/widgets/filter.dart';
 import 'package:spending_docs/features/home/presentation/widgets/receipt_list_view.dart';
 import 'package:spending_docs/features/receipts/presentation/widgets/receipt_form.dart';
 import 'package:spending_docs/features/scan/cubits/receipt_scan_image_cubit.dart';
-import 'package:spending_docs/features/scan/data/models/scanned_receipt_dto.dart';
 import 'package:spending_docs/features/scan/presentation/utils/image_picker_util.dart';
 import 'package:spending_docs/features/scan/presentation/widgets/scan_form.dart';
 import 'package:spending_docs/l10n/app_localizations.dart'
@@ -90,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (imagePath != null && imagePath.isNotEmpty) {
         Uint8List imageBytes = await _getImageBytesFromPath(imagePath);
         context.read<ReceiptScanImageCubit>().processImage(imageBytes);
-        ScanForm.showScanResultPopup(context: context);
+        ScanForm.showScanResultModalBottomSheet(context: context);
       }
 
       if (imagePath != null) {

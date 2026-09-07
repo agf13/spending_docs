@@ -4,13 +4,14 @@ import 'package:spending_docs/features/scan/cubits/receipt_scan_image_cubit.dart
 import 'package:spending_docs/features/scan/cubits/receipt_scan_image_state.dart';
 import 'package:spending_docs/features/scan/data/models/scanned_receipt_dto.dart';
 import 'package:spending_docs/features/scan/data/models/scanned_receipt_item_dto.dart';
+import 'package:spending_docs/features/scan/presentation/widgets/scan_receipt_result.dart';
 
 class ScanForm {
-  static void showScanResultPopup({
+  static void showScanResultModalBottomSheet({
     required BuildContext context,
     ScannedReceiptDto? receiptDto,
   }) {
-    showDialog(
+    showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return ScanFormBody(receiptDto: receiptDto);
@@ -31,21 +32,18 @@ class ScanFormBody extends StatefulWidget {
 class _ScanFormBodyState extends State<ScanFormBody> {
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      child: BlocBuilder<ReceiptScanImageCubit, ReceiptScanImageState>(
-        builder: (context, state) {
-          if (state is ReceiptScanImageStateLoading) {
-            return showLoadingSpinner();
-          } else if (state is ReceiptScanImageStateError) {
-            return showError(state.error);
-          } else if (state is ReceiptScanImageStateReady) {
-            return showResult(state.scannedReceiptDto);
-          } else {
-            return defaultText();
-          }
-        },
-      ),
+    return BlocBuilder<ReceiptScanImageCubit, ReceiptScanImageState>(
+      builder: (context, state) {
+        if (state is ReceiptScanImageStateLoading) {
+          return showLoadingSpinner();
+        } else if (state is ReceiptScanImageStateError) {
+          return showError(state.error);
+        } else if (state is ReceiptScanImageStateReady) {
+          return showResult(state.scannedReceiptDto);
+        } else {
+          return defaultText();
+        }
+      },
     );
   }
 
@@ -78,23 +76,7 @@ class _ScanFormBodyState extends State<ScanFormBody> {
   }
 
   Widget showResult(ScannedReceiptDto scannedReceiptDto) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SingleChildScrollView(child: Text(scannedReceiptDto.toString())),
-        Text(scannedReceiptDto.amount.toString()),
-        Text(scannedReceiptDto.storeName ?? "not store"),
-        Text(scannedReceiptDto.card),
-        Text(scannedReceiptDto.date.toString()),
-        Flexible(child: listReceiptItems(scannedReceiptDto.receiptItemList)),
-        ElevatedButton(
-          onPressed: () {
-            print('button pressed');
-          },
-          child: Text('close'),
-        ),
-      ],
-    );
+    return ScanReceiptResult(scannedReceiptDto: scannedReceiptDto);
   }
 
   Widget defaultText() {
