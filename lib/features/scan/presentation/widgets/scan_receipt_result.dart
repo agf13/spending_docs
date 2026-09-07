@@ -482,6 +482,7 @@ class _ScanReceiptResultState extends State<ScanReceiptResult> {
 
     if (mounted) {
       context.read<ReceiptListBloc>().add(ReceiptRefresh());
+      Navigator.of(context).pop();
     }
   }
 
