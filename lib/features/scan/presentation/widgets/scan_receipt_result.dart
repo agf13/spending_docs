@@ -37,6 +37,7 @@ class _ScanReceiptResultState extends State<ScanReceiptResult> {
   static const int _animationDuration = 200;
 
   DateTime _dateTime = DateTime.now();
+  int _counterKey = 0;
 
   @override
   void initState() {
@@ -63,31 +64,37 @@ class _ScanReceiptResultState extends State<ScanReceiptResult> {
 
   @override
   Widget build(BuildContext context) {
-    //final double heightOfScreen = MediaQuery.of(context).size.height;
+    final double heightOfScreen = MediaQuery.of(context).size.height;
     //final double widthOfScreen = MediaQuery.of(context).size.width;
-    //final double heightContraint = 1 * heightOfScreen;
+    final double heightContraint = 0.7 * heightOfScreen;
     //final double widthConstraint = 1 * widthOfScreen;
 
     return Container(
+      constraints: BoxConstraints(maxHeight: heightContraint),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      child: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              // Title
-              receiptFormTitle(),
-              // Spacer
-              SizedBox(height: 5),
-              // Animated list with receipt details
-              receiptDetails(),
-              // Action buttons
-              actionButtons(),
-            ],
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                // Title
+                receiptFormTitle(),
+                // Spacer
+                SizedBox(height: 5),
+                // Animated list with receipt details
+                receiptDetails(),
+                // Action buttons
+                actionButtons(),
+              ],
+            ),
           ),
         ),
       ),
@@ -149,6 +156,9 @@ class _ScanReceiptResultState extends State<ScanReceiptResult> {
       },
       onSaved: (_) {},
       controller: _amountController,
+      onChanged: (value) {
+        _amountController.text = value ?? '';
+      },
     );
   }
 
@@ -160,6 +170,9 @@ class _ScanReceiptResultState extends State<ScanReceiptResult> {
       validateFunction: ReceiptValidator.validateStoreNameError,
       onSaved: (_) {},
       controller: _storeNameController,
+      onChanged: (value) {
+        _storeNameController.text = value ?? '';
+      },
     );
   }
 
@@ -172,6 +185,9 @@ class _ScanReceiptResultState extends State<ScanReceiptResult> {
       onSaved: (_) {},
       controller: _dateController,
       sufixIconButton: dateTimeIconButton(),
+      onChanged: (value) {
+        _dateController.text = value ?? '';
+      },
     );
   }
 
@@ -223,24 +239,31 @@ class _ScanReceiptResultState extends State<ScanReceiptResult> {
     // Get values
     String itemName = '';
     String price = '';
+    TextEditingController? itemNameController;
+    TextEditingController? priceController;
+
+    final currentItem =
+        removedItem ?? widget.scannedReceiptDto.receiptItemList[index];
+
     if (removedItem != null) {
       itemName = removedItem.itemName;
       price = removedItem.price.toString();
     } else {
       itemName = widget.scannedReceiptDto.receiptItemList[index].itemName;
       price = widget.scannedReceiptDto.receiptItemList[index].price.toString();
+
+      // Create and append controllers
+      itemNameController = _itemsEditingController[index * 2];
+      priceController = _itemsEditingController[index * 2 + 1];
+
+      // Initialize value for controllers
+      itemNameController.text = itemName;
+      priceController.text = price;
     }
-
-    // Create and append controllers
-    final itemNameController = _itemsEditingController[index * 2];
-    final priceController = _itemsEditingController[index * 2 + 1];
-
-    // Initialize value for controllers
-    itemNameController.text = itemName;
-    priceController.text = price;
 
     // Return the widget
     return Column(
+      key: ValueKey(currentItem),
       children: [
         // Item and price fields
         Row(
@@ -255,6 +278,10 @@ class _ScanReceiptResultState extends State<ScanReceiptResult> {
                 validateFunction: ReceiptItemValidator.validateItemNameError,
                 onSaved: (_) {},
                 controller: itemNameController,
+                onChanged: (value) {
+                  widget.scannedReceiptDto.receiptItemList[index].itemName =
+                      value ?? '';
+                },
               ),
             ),
             // Spacer
@@ -269,6 +296,10 @@ class _ScanReceiptResultState extends State<ScanReceiptResult> {
                 validateFunction: ReceiptItemValidator.validatePriceError,
                 onSaved: (_) {},
                 controller: priceController,
+                onChanged: (value) {
+                  widget.scannedReceiptDto.receiptItemList[index].price =
+                      double.tryParse(value ?? '') ?? 0;
+                },
               ),
             ),
             // Spacer
@@ -337,7 +368,7 @@ class _ScanReceiptResultState extends State<ScanReceiptResult> {
 
   Widget actionButtons() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -401,41 +432,12 @@ class _ScanReceiptResultState extends State<ScanReceiptResult> {
 
   void onSave() {
     if (_formKey.currentState!.validate()) {
-      final receiptDto = getReceiptDtoFromForm();
-      if (receiptDto == null) return;
-
-      saveToRepository(receiptDto);
+      saveToRepository(widget.scannedReceiptDto);
     }
-  }
-
-  ScannedReceiptDto? getReceiptDtoFromForm() {
-    final amount = double.tryParse(_amountController.text) ?? 0;
-    final storeName = _storeNameController.text;
-    final card = _cardController.text;
-    final date = _dateTime;
-    List<ScannedReceiptItemDto> items = [];
-
-    for (int index = 0; index < _itemsEditingController.length; index += 2) {
-      String itemName = _itemsEditingController[index].text;
-      double price =
-          double.tryParse(_itemsEditingController[index + 1].text) ?? 0;
-      items.add(ScannedReceiptItemDto(itemName: itemName, price: price));
-    }
-
-    return ScannedReceiptDto(
-      amount: amount,
-      storeName: storeName,
-      date: date,
-      card: card,
-      receiptItemList: items,
-    );
   }
 
   String? checkAmountConsistency() {
-    final receiptDto = getReceiptDtoFromForm();
-    if (receiptDto == null) {
-      return null; // No amount consistency check can be made if the form is not valid
-    }
+    final receiptDto = widget.scannedReceiptDto;
 
     double totalAmount = 0;
     for (int index = 0; index < receiptDto.receiptItemList.length; index++) {

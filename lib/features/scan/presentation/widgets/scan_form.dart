@@ -13,6 +13,7 @@ class ScanForm {
   }) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return ScanFormBody(receiptDto: receiptDto);
       },

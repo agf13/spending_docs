@@ -1,6 +1,6 @@
 class ScannedReceiptItemDto {
-  final double price;
-  final String itemName;
+  double price;
+  String itemName;
 
   ScannedReceiptItemDto({required this.price, required this.itemName});
 

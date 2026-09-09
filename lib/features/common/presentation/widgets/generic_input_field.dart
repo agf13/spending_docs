@@ -12,6 +12,7 @@ class GenericInputField extends StatefulWidget {
   final String? initialValue;
   final bool readOnly;
   final Function(String?)? extraValueValidation;
+  final Function(String?)? onChanged;
 
   const GenericInputField({
     super.key,
@@ -25,6 +26,7 @@ class GenericInputField extends StatefulWidget {
     this.controller,
     this.initialValue,
     this.extraValueValidation,
+    this.onChanged,
     this.readOnly = false,
   });
 
@@ -46,6 +48,7 @@ class _GenericInputFieldState extends State<GenericInputField> {
         // The text field
         SizedBox(
           child: TextFormField(
+            onChanged: widget.onChanged,
             readOnly: widget.readOnly,
             initialValue: widget.initialValue,
             keyboardType: widget.keyboardType,
