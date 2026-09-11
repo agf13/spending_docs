@@ -278,6 +278,62 @@ abstract class AppLocalizations {
   /// **'Edit your receipt details'**
   String get editReceiptFormSubtitle;
 
+  /// No description provided for @scanReceiptResultFormTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review scan result'**
+  String get scanReceiptResultFormTitle;
+
+  /// No description provided for @scanReceiptResultFormLabelAmout.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get scanReceiptResultFormLabelAmout;
+
+  /// No description provided for @scanReceiptResultFormLabelStoreName.
+  ///
+  /// In en, this message translates to:
+  /// **'Store name'**
+  String get scanReceiptResultFormLabelStoreName;
+
+  /// No description provided for @scanReceiptResultFormLabelDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get scanReceiptResultFormLabelDate;
+
+  /// No description provided for @scanReceiptResultFormLabelCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Card'**
+  String get scanReceiptResultFormLabelCard;
+
+  /// No description provided for @scanReceiptResultButtonCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get scanReceiptResultButtonCancel;
+
+  /// No description provided for @scanReceiptResultButtonRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get scanReceiptResultButtonRetry;
+
+  /// No description provided for @scanReceiptResultButtonSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get scanReceiptResultButtonSave;
+
+  /// The calculated total is different from the declared one
+  ///
+  /// In en, this message translates to:
+  /// **'Sum of item prices is different from receipt\'s amount: Should have been: {scanReceiptResultCalculatedTotal}'**
+  String scanReceiptResultTotalAmountDifferent(
+    double scanReceiptResultCalculatedTotal,
+  );
+
   /// No description provided for @confirmationPopupDeleteReceiptTile.
   ///
   /// In en, this message translates to:

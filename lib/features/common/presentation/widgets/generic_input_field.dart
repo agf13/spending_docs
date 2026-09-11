@@ -69,7 +69,8 @@ class _GenericInputFieldState extends State<GenericInputField> {
             ),
             validator: (value) {
               String? errorText = widget.validateFunction(value, context);
-              if (errorText == null && widget.extraValueValidation != null) {
+              if (errorText == null &&
+                  widget.extraValueValidation?.call(value) != null) {
                 errorText = widget.extraValueValidation!(value);
               }
 

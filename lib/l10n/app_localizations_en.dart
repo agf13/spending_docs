@@ -101,6 +101,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editReceiptFormSubtitle => 'Edit your receipt details';
 
   @override
+  String get scanReceiptResultFormTitle => 'Review scan result';
+
+  @override
+  String get scanReceiptResultFormLabelAmout => 'Amount';
+
+  @override
+  String get scanReceiptResultFormLabelStoreName => 'Store name';
+
+  @override
+  String get scanReceiptResultFormLabelDate => 'Date';
+
+  @override
+  String get scanReceiptResultFormLabelCard => 'Card';
+
+  @override
+  String get scanReceiptResultButtonCancel => 'Cancel';
+
+  @override
+  String get scanReceiptResultButtonRetry => 'Retry';
+
+  @override
+  String get scanReceiptResultButtonSave => 'Save';
+
+  @override
+  String scanReceiptResultTotalAmountDifferent(
+    double scanReceiptResultCalculatedTotal,
+  ) {
+    return 'Sum of item prices is different from receipt\'s amount: Should have been: $scanReceiptResultCalculatedTotal';
+  }
+
+  @override
   String get confirmationPopupDeleteReceiptTile => 'Are you sure?';
 
   @override

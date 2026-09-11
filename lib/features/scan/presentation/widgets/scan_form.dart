@@ -4,7 +4,7 @@ import 'package:spending_docs/features/scan/cubits/receipt_scan_image_cubit.dart
 import 'package:spending_docs/features/scan/cubits/receipt_scan_image_state.dart';
 import 'package:spending_docs/features/scan/data/models/scanned_receipt_dto.dart';
 import 'package:spending_docs/features/scan/data/models/scanned_receipt_item_dto.dart';
-import 'package:spending_docs/features/scan/presentation/widgets/scan_receipt_result.dart';
+import 'package:spending_docs/features/scan/presentation/widgets/review_scan.dart';
 
 class ScanForm {
   static void showScanResultModalBottomSheet({
@@ -24,7 +24,7 @@ class ScanForm {
 class ScanFormBody extends StatefulWidget {
   final ScannedReceiptDto? receiptDto;
 
-  ScanFormBody({super.key, this.receiptDto});
+  const ScanFormBody({super.key, this.receiptDto});
 
   @override
   State<ScanFormBody> createState() => _ScanFormBodyState();
@@ -33,6 +33,13 @@ class ScanFormBody extends StatefulWidget {
 class _ScanFormBodyState extends State<ScanFormBody> {
   @override
   Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      child: formBody(),
+    );
+  }
+
+  Widget formBody() {
     return BlocBuilder<ReceiptScanImageCubit, ReceiptScanImageState>(
       builder: (context, state) {
         if (state is ReceiptScanImageStateLoading) {
@@ -77,7 +84,7 @@ class _ScanFormBodyState extends State<ScanFormBody> {
   }
 
   Widget showResult(ScannedReceiptDto scannedReceiptDto) {
-    return ScanReceiptResult(scannedReceiptDto: scannedReceiptDto);
+    return ReviewScan(scannedReceiptDto: scannedReceiptDto);
   }
 
   Widget defaultText() {

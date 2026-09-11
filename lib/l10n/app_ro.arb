@@ -36,6 +36,25 @@
   "editReceiptFormTitle": "Editeaza bon",
   "editReceiptFormSubtitle": "Aici poti edita bonul",
 
+  "scanReceiptResultFormTitle": "Verifica scanarea",
+  "scanReceiptResultFormLabelAmout": "Total",
+  "scanReceiptResultFormLabelStoreName": "Magazin",
+  "scanReceiptResultFormLabelDate": "Data",
+  "scanReceiptResultFormLabelCard": "Card",
+  "scanReceiptResultButtonCancel": "Renunta",
+  "scanReceiptResultButtonRetry": "Reincearca",
+  "scanReceiptResultButtonSave": "Salveaza",
+  "scanReceiptResultTotalAmountDifferent": "Suma preturilor e diferita de total. Totalul este: {scanReceiptResultCalculatedTotal}",
+  "@scanReceiptResultTotalAmountDifferent": {
+    "description": "Un mesaj de eroare la corespondenta dintre preturi si totalul de pe bon",
+    "placeholders": {
+      "scanReceiptResultCalculatedTotal": {
+        "type": "double",
+        "example": "1"
+      }
+    }
+  },
+
   "confirmationPopupDeleteReceiptTile": "Are you sure?",
   "confirmationPopupDelete": "Sterge",
   "confirmationPopupCancel": "Renunta"

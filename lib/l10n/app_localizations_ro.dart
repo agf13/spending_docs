@@ -103,6 +103,37 @@ class AppLocalizationsRo extends AppLocalizations {
   String get editReceiptFormSubtitle => 'Aici poti edita bonul';
 
   @override
+  String get scanReceiptResultFormTitle => 'Verifica scanarea';
+
+  @override
+  String get scanReceiptResultFormLabelAmout => 'Total';
+
+  @override
+  String get scanReceiptResultFormLabelStoreName => 'Magazin';
+
+  @override
+  String get scanReceiptResultFormLabelDate => 'Data';
+
+  @override
+  String get scanReceiptResultFormLabelCard => 'Card';
+
+  @override
+  String get scanReceiptResultButtonCancel => 'Renunta';
+
+  @override
+  String get scanReceiptResultButtonRetry => 'Reincearca';
+
+  @override
+  String get scanReceiptResultButtonSave => 'Salveaza';
+
+  @override
+  String scanReceiptResultTotalAmountDifferent(
+    double scanReceiptResultCalculatedTotal,
+  ) {
+    return 'Suma preturilor e diferita de total. Totalul este: $scanReceiptResultCalculatedTotal';
+  }
+
+  @override
   String get confirmationPopupDeleteReceiptTile => 'Are you sure?';
 
   @override

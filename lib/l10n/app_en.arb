@@ -48,6 +48,25 @@
   "editReceiptFormTitle": "Edit receipt",
   "editReceiptFormSubtitle": "Edit your receipt details",
 
+  "scanReceiptResultFormTitle": "Review scan result",
+  "scanReceiptResultFormLabelAmout": "Amount",
+  "scanReceiptResultFormLabelStoreName": "Store name",
+  "scanReceiptResultFormLabelDate": "Date",
+  "scanReceiptResultFormLabelCard": "Card",
+  "scanReceiptResultButtonCancel": "Cancel",
+  "scanReceiptResultButtonRetry": "Retry",
+  "scanReceiptResultButtonSave": "Save",
+  "scanReceiptResultTotalAmountDifferent": "Sum of item prices is different from receipt's amount: Should have been: {scanReceiptResultCalculatedTotal}",
+  "@scanReceiptResultTotalAmountDifferent": {
+    "description": "The calculated total is different from the declared one",
+    "placeholders": {
+      "scanReceiptResultCalculatedTotal": {
+        "type": "double",
+        "example": "1"
+      }
+    }
+  },
+
   "confirmationPopupDeleteReceiptTile": "Are you sure?",
   "confirmationPopupDelete": "Delete",
   "confirmationPopupCancel": "Cancel"
