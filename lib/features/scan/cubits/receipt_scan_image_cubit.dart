@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spending_docs/core/utils/environment.dart';
+import 'package:spending_docs/core/config/environment.dart';
 import 'package:spending_docs/features/scan/cubits/receipt_scan_image_state.dart';
 import 'package:spending_docs/features/scan/data/datasources/gemini_receipt_scan_remote_data_source_impl.dart';
 import 'package:spending_docs/features/scan/data/datasources/receipt_scan_remote_data_source.dart';
