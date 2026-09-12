@@ -11,16 +11,19 @@ the following structure:
 }
 
 # Description
-Project to help me keep track of my receipts
+Project to keep track of receipts
 
-The design won't be top quality, but I will be focusing on:
-- using best standards
-- using BLoC architecture
-- responsiveness
-
-# ... Work in progress ...
+# Points to highlight for recruiters about the project
+- BLOC architecture
+- Drift for DB management
+- Localization (translation files)
+- AI to parse receipts through API calls
+- AnimatedList with items gliding on remove and add
+- A screen to review AI response before accepting it
 
 # Screenshots
-<img width="1277" height="741" alt="image" src="https://github.com/user-attachments/assets/1f0d188c-31eb-41e7-b994-38c11826e134" />
+<img width="945" height="2048" alt="WhatsApp Image 2026-09-12 at 5 08 36 PM (1)" src="https://github.com/user-attachments/assets/5b7ca46b-c58d-4aac-9a06-921d38496f01" />
+<img width="945" height="2048" alt="WhatsApp Image 2026-09-12 at 5 08 36 PM (2)" src="https://github.com/user-attachments/assets/27f74f98-e664-4d27-a8c0-71281878f953" />
 
-<img width="1276" height="744" alt="image" src="https://github.com/user-attachments/assets/cfc1b4a9-726c-44db-ab46-94f1ca1736d2" />
+<img width="945" height="2048" alt="WhatsApp Image 2026-09-12 at 5 08 36 PM" src="https://github.com/user-attachments/assets/b0c3bf7c-acda-4945-9a8a-7eb13232f032" />
+<img width="945" height="2048" alt="WhatsApp Image 2026-09-12 at 5 08 35 PM" src="https://github.com/user-attachments/assets/ec3384bb-ef0d-4785-b28c-5d09336d3ba4" />
