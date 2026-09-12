@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:spending_docs/features/scan/data/models/scanned_receipt_item_dto.dart';
 
 class ScannedReceiptDto {
@@ -21,8 +22,10 @@ class ScannedReceiptDto {
     double amountValue = double.tryParse(jsonData['amount'].toString()) ?? 0;
     String? storeNameValue = jsonData['storeName'] ?? "";
     String cardValue = jsonData['card'] ?? "";
+
+    DateFormat formatter = DateFormat("dd-MM-yyyy HH:mm:ss");
     DateTime dateValue =
-        DateTime.tryParse(jsonData["date"].toString()) ??
+        formatter.tryParse(jsonData["date"].toString()) ??
         DateTime.parse("1990-01-01 00:00:00");
     List<ScannedReceiptItemDto> listItemsDto = [];
 
