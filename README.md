@@ -20,10 +20,11 @@ Project to keep track of receipts
 - AI to parse receipts through API calls
 - AnimatedList with items gliding on remove and add
 - A screen to review AI response before accepting it
+- I use Material 3 for styling
 
 # Screenshots
 <img width="236" height="512" alt="WhatsApp Image 2026-09-12 at 5 08 36 PM (1)" src="https://github.com/user-attachments/assets/5b7ca46b-c58d-4aac-9a06-921d38496f01" />
 <img width="236" height="512" alt="WhatsApp Image 2026-09-12 at 5 08 36 PM (2)" src="https://github.com/user-attachments/assets/27f74f98-e664-4d27-a8c0-71281878f953" />
 
-<img width="236" height="512" alt="WhatsApp Image 2026-09-12 at 5 08 36 PM" src="https://github.com/user-attachments/assets/b0c3bf7c-acda-4945-9a8a-7eb13232f032" />
+<img width="236" height="512" alt="review_ai_scan_1" src="https://github.com/user-attachments/assets/1a2e06f8-2652-4734-a007-e03fe9ba9dd8" />
 <img width="236" height="512" alt="WhatsApp Image 2026-09-12 at 5 08 35 PM" src="https://github.com/user-attachments/assets/ec3384bb-ef0d-4785-b28c-5d09336d3ba4" />
