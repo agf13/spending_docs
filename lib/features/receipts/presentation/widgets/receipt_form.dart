@@ -309,28 +309,25 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
   }
 
   Widget formButtons() {
-    return SizedBox(
-      width: _fieldWidth,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            // Cancel button
-            formButton(
-              label: AppLocalizations.of(context)!.newReceiptFormCancel,
-              onPressed: () => onCancel(),
-            ),
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          // Cancel button
+          formButton(
+            label: AppLocalizations.of(context)!.newReceiptFormCancel,
+            onPressed: () => onCancel(),
+          ),
 
-            // Save button
-            formButton(
-              label: AppLocalizations.of(context)!.newReceiptFormSave,
-              onPressed: () => onSave(),
-            ),
-          ],
-        ),
+          // Save button
+          formButton(
+            label: AppLocalizations.of(context)!.newReceiptFormSave,
+            onPressed: () => onSave(),
+          ),
+        ],
       ),
     );
   }
@@ -369,7 +366,6 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
       card: Value(card),
     );
 
-    print('---- add called');
     context.read<ReceiptsRepository>().add(receiptCompanion);
     context.read<ReceiptListBloc>().add(ReceiptRefresh());
   }
@@ -389,26 +385,22 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
       card: card,
     );
 
-    print('---- update called');
     context.read<ReceiptsRepository>().update(updatedReceipt);
     context.read<ReceiptListBloc>().add(ReceiptRefresh());
   }
 
   Widget formButton({required String label, required Function() onPressed}) {
-    return SizedBox(
-      width: _buttonWidth,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Text(
-            label,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Text(
+          label,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onPrimary,
           ),
         ),
       ),

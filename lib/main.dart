@@ -11,6 +11,7 @@ import 'package:spending_docs/features/receipts/blocs/receipt_list_bloc.dart';
 import 'package:spending_docs/features/receipts/blocs/receipts_list_cubit.dart';
 import 'package:spending_docs/features/receipts/data/repositories/receipts_repository.dart';
 import 'package:spending_docs/features/scan/cubits/receipt_scan_image_cubit.dart';
+import 'package:spending_docs/features/translation/bloc/translation_cubit.dart';
 import 'package:spending_docs/l10n/app_localizations.dart';
 import 'package:spending_docs/themes/app_theme.dart';
 
@@ -70,21 +71,32 @@ class MyApp extends StatelessWidget {
             },
           ),
 
-          // Handle user choosing time (hh:mm:ss)
+          // Handle user choosing a receipt image
           BlocProvider<ReceiptScanImageCubit>(
             create: (context) {
               return ReceiptScanImageCubit();
             },
           ),
+
+          // Handle locale changing
+          BlocProvider<TranslationCubit>(
+            create: (context) {
+              return TranslationCubit();
+            },
+          ),
         ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          supportedLocales: AppLocalizations.supportedLocales,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          locale: const Locale('en'),
-          //home: HomepageScreen(),
-          home: HomeScreen(),
-          theme: AppTheme.emeraldTheme,
+        child: BlocBuilder<TranslationCubit, Locale>(
+          builder: (context, locale) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              supportedLocales: AppLocalizations.supportedLocales,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              locale: locale,
+              //home: HomepageScreen(),
+              home: HomeScreen(),
+              theme: AppTheme.emeraldTheme,
+            );
+          },
         ),
       ),
     );

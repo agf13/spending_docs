@@ -9,6 +9,7 @@ import 'package:spending_docs/features/receipts/presentation/widgets/receipt_for
 import 'package:spending_docs/features/scan/cubits/receipt_scan_image_cubit.dart';
 import 'package:spending_docs/features/scan/presentation/utils/image_picker_util.dart';
 import 'package:spending_docs/features/scan/presentation/widgets/scan_form.dart';
+import 'package:spending_docs/features/translation/presentation/widgets/segmented_locale_switch.dart';
 import 'package:spending_docs/l10n/app_localizations.dart'
     show AppLocalizations;
 
@@ -41,7 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   AppBar appBar() {
-    return AppBar(title: Text(AppLocalizations.of(context)!.homeTitle));
+    return AppBar(
+      title: Text(AppLocalizations.of(context)!.homeTitle),
+      actionsPadding: const EdgeInsets.only(right: 5),
+      actions: [SegmentedLocaleSwitch()],
+    );
   }
 
   Widget body() {
