@@ -47,7 +47,8 @@ class _ScanFormBodyState extends State<ScanFormBody> {
         } else if (state is ReceiptScanImageStateError) {
           return showError(state.error);
         } else if (state is ReceiptScanImageStateReady) {
-          return showResult(state.scannedReceiptDto);
+          //return showResult(state.scannedReceiptDto);
+          return showError('This is an error');
         } else {
           return defaultText();
         }
@@ -64,9 +65,8 @@ class _ScanFormBodyState extends State<ScanFormBody> {
   }
 
   Widget showError(String errorString) {
-    return SizedBox(
-      width: 200,
-      height: 100,
+    return FractionallySizedBox(
+      heightFactor: 0.5,
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Center(
@@ -74,7 +74,7 @@ class _ScanFormBodyState extends State<ScanFormBody> {
             child: Text(
               errorString,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onPrimary,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
             ),
           ),
@@ -88,16 +88,15 @@ class _ScanFormBodyState extends State<ScanFormBody> {
   }
 
   Widget defaultText() {
-    return SizedBox(
-      height: 100,
-      width: 200,
+    return FractionallySizedBox(
+      heightFactor: 0.5,
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Center(
           child: Text(
             'Weird result. Contact the programmer if you manage to recreate this text',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
             ),
           ),
         ),
