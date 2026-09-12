@@ -47,8 +47,7 @@ class _ScanFormBodyState extends State<ScanFormBody> {
         } else if (state is ReceiptScanImageStateError) {
           return showError(state.error);
         } else if (state is ReceiptScanImageStateReady) {
-          //return showResult(state.scannedReceiptDto);
-          return showError('This is an error');
+          return showResult(state.scannedReceiptDto);
         } else {
           return defaultText();
         }
