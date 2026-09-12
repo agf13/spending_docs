@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spending_docs/blocs/popup_widget_cubit.dart';
-import 'package:spending_docs/blocs/receipt_items_list_cubit.dart';
-import 'package:spending_docs/blocs/receipts_list_cubit.dart';
-import 'package:spending_docs/database/app_database.dart';
-import 'package:spending_docs/repositories/receipt_items_repository.dart';
-import 'package:spending_docs/repositories/receipts_repository.dart';
-import 'package:spending_docs/screens/homepage_screen.dart';
+import 'package:spending_docs/core/database/app_database.dart';
+import 'package:spending_docs/features/common/blocs/timePickerCubit.dart';
+import 'package:spending_docs/features/home/presentation/screens/home_screen.dart';
+import 'package:spending_docs/features/receipt_items/blocs/receipt_items_list_cubit.dart';
+import 'package:spending_docs/features/receipt_items/data/repositories/receipt_items_repository.dart';
+import 'package:spending_docs/features/receipts/blocs/receipt_list_bloc.dart';
+import 'package:spending_docs/features/receipts/data/repositories/receipts_repository.dart';
+import 'package:spending_docs/features/scan/cubits/receipt_scan_image_cubit.dart';
+import 'package:spending_docs/features/translation/bloc/translation_cubit.dart';
+import 'package:spending_docs/l10n/app_localizations.dart';
+import 'package:spending_docs/themes/app_theme.dart';
 
 void main() {
   final database = AppDatabase();
@@ -35,16 +39,12 @@ class MyApp extends StatelessWidget {
 
       child: MultiBlocProvider(
         providers: [
-          // PopupWidgetCubit injection in context
-          BlocProvider<PopupWidgetCubit>(
-            create: (context) => PopupWidgetCubit(),
-          ),
-
           // ReceiptsListCubit (to handle the list of receipts)
-          BlocProvider<ReceiptsListCubit>(
+          BlocProvider<ReceiptListBloc>(
             create: (context) {
               final repository = context.read<ReceiptsRepository>();
-              return ReceiptsListCubit(repository)..getItems();
+              return ReceiptListBloc(repository: repository)
+                ..add(ReceiptFetched());
             },
           ),
 
@@ -55,8 +55,41 @@ class MyApp extends StatelessWidget {
               return ReceiptItemsListCubit(repository)..getItems();
             },
           ),
+
+          // Handle user choosing time (hh:mm:ss)
+          BlocProvider<TimePickerCubit>(
+            create: (context) {
+              return TimePickerCubit();
+            },
+          ),
+
+          // Handle user choosing a receipt image
+          BlocProvider<ReceiptScanImageCubit>(
+            create: (context) {
+              return ReceiptScanImageCubit();
+            },
+          ),
+
+          // Handle locale changing
+          BlocProvider<TranslationCubit>(
+            create: (context) {
+              return TranslationCubit();
+            },
+          ),
         ],
-        child: MaterialApp(home: HomepageScreen()),
+        child: BlocBuilder<TranslationCubit, Locale>(
+          builder: (context, locale) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              supportedLocales: AppLocalizations.supportedLocales,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              locale: locale,
+              //home: HomepageScreen(),
+              home: HomeScreen(),
+              theme: AppTheme.emeraldTheme,
+            );
+          },
+        ),
       ),
     );
   }
