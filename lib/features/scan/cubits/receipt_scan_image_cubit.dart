@@ -19,13 +19,10 @@ class ReceiptScanImageCubit extends Cubit<ReceiptScanImageState> {
     emit(ReceiptScanImageStateLoading());
 
     try {
-      print('ScanCubit: Sending for scan');
       ScannedReceiptDto scannedReceiptDto = await _scanRemoteDataSource
           .analyzeReceiptImage(imageBytes);
-      print('ScanCubit: Received answer: ${scannedReceiptDto.toString()}');
       emit(ReceiptScanImageStateReady(scannedReceiptDto: scannedReceiptDto));
     } catch (e) {
-      print('ScanCubit: encountered error');
       emit(ReceiptScanImageStateError(error: e.toString()));
     }
   }

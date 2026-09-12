@@ -97,10 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ScanForm.showScanResultModalBottomSheet(context: context);
       }
 
-      if (imagePath != null) {
-        print('we can process the image: $imagePath');
-      }
-
       setState(() {
         _selectedIndex = 0;
         _currentPage = 0;

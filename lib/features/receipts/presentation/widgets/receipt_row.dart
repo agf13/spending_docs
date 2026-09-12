@@ -69,7 +69,7 @@ class _ReceiptRowState extends State<ReceiptRow> {
   }
 
   void handleCardPress() {
-    print('card tapped');
+    return;
   }
 
   Widget leftIcon(BuildContext context) {
