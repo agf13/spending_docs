@@ -27,4 +27,4 @@ Project to keep track of receipts
 <img width="236" height="512" alt="WhatsApp Image 2026-09-12 at 5 08 36 PM (2)" src="https://github.com/user-attachments/assets/27f74f98-e664-4d27-a8c0-71281878f953" />
 
 <img width="236" height="512" alt="review_ai_scan_1" src="https://github.com/user-attachments/assets/1a2e06f8-2652-4734-a007-e03fe9ba9dd8" />
-<img width="236" height="512" alt="WhatsApp Image 2026-09-12 at 5 08 35 PM" src="https://github.com/user-attachments/assets/ec3384bb-ef0d-4785-b28c-5d09336d3ba4" />
+<img width="236" height="512" alt="new_receipt_icon_updated" src="https://github.com/user-attachments/assets/a6e479fd-6aac-4300-a8bd-a03dad243ac9" />
