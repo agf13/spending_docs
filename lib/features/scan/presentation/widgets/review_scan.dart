@@ -71,12 +71,16 @@ class _ReviewScanState extends State<ReviewScan> {
       children: [
         // Title
         formTitle(),
+
         // Spacer
         SizedBox(height: 5),
+
         // Animated list with receipt details
         Expanded(child: receiptDetails()),
+
         // Spacer
         SizedBox(height: 5),
+
         // Actions
         formActions(),
       ],
@@ -178,27 +182,21 @@ class _ReviewScanState extends State<ReviewScan> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Group cancel and a container to nicely allign
-          Expanded(
-            child: Row(
-              children: [
-                // Cancel
-                cancelButton(),
-                // Spacer
-                Container(),
-              ],
-            ),
+          Row(
+            children: [
+              // Cancel
+              cancelButton(),
+            ],
           ),
           // Group retry and save buttons toghether
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // Retry
-                retryButton(),
-                // Save
-                saveButton(),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // Retry
+              retryButton(),
+              // Save
+              saveButton(),
+            ],
           ),
         ],
       ),
@@ -270,7 +268,7 @@ class _ReviewScanState extends State<ReviewScan> {
   void onAddItem() {
     _receiptFormState.items.add(ReviewReceiptItemState());
     _animatedKey.currentState?.insertItem(
-      _receiptFormState.items.length + 2,
+      _receiptFormState.items.length + 1,
       duration: Duration(milliseconds: 200),
     );
   }
