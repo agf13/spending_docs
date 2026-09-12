@@ -191,7 +191,7 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
             GenericInputField(
               labelText: AppLocalizations.of(context)!.newReceiptFormLabelDate,
               hintText: AppLocalizations.of(context)!.newReceiptFormHintDate,
-              iconData: Icons.calendar_today,
+              iconData: Icons.calendar_month,
               validateFunction: ReceiptValidator.validateDateError,
               onSaved: onDateSaved,
               sufixIconButton: dateTimeIconButton(),
