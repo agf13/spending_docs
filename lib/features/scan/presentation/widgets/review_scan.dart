@@ -166,6 +166,7 @@ class _ReviewScanState extends State<ReviewScan> {
       }
 
       // Continue normal building
+      print('index $index and length ${_listKeys.length}');
       return receiptItemFormRowAnimated(
         _listKeys[index],
         _receiptFormState.items[index - 2],
@@ -320,7 +321,7 @@ class _ReviewScanState extends State<ReviewScan> {
     );
     GlobalKey itemKey = _listKeys.removeAt(index); // No conversion needed
 
-    _animatedKey.currentState?.removeItem(index + 2, (context, animation) {
+    _animatedKey.currentState?.removeItem(index, (context, animation) {
       return receiptItemFormRowAnimated(itemKey, itemState, animation, null);
     }, duration: Duration(milliseconds: 200));
   }
