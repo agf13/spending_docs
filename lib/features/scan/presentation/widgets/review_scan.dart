@@ -335,8 +335,8 @@ class _ReviewScanState extends State<ReviewScan> {
   }
 
   void onSave() async {
-    _ensureFirstErrorItemVisible();
-    if (_formKey.currentState?.validate() == true) {
+    int? index = _ensureFirstErrorItemVisible();
+    if (_formKey.currentState?.validate() == true && index == null) {
       await saveToMemory(_receiptFormState);
 
       if (!mounted) return;
