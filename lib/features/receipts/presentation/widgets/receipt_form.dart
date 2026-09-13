@@ -167,7 +167,7 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
                 context,
               )!.newReceiptFormHintStoreName,
               iconData: Icons.store,
-              validateFunction: ReceiptValidator.validateStoreNameError,
+              validateFunction: validateStoreName,
               onSaved: onStoreNameSaved,
               initialValue: widget.receipt?.storeName,
             ),
@@ -179,7 +179,7 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
               )!.newReceiptFormLabelAmount,
               hintText: AppLocalizations.of(context)!.newReceiptFormHintAmount,
               iconData: Icons.money,
-              validateFunction: ReceiptValidator.validateAmountError,
+              validateFunction: validateAmount,
               onSaved: onAmountSaved,
               keyboardType: const TextInputType.numberWithOptions(
                 decimal: true,
@@ -192,7 +192,7 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
               labelText: AppLocalizations.of(context)!.newReceiptFormLabelDate,
               hintText: AppLocalizations.of(context)!.newReceiptFormHintDate,
               iconData: Icons.calendar_month,
-              validateFunction: ReceiptValidator.validateDateError,
+              validateFunction: validateDate,
               onSaved: onDateSaved,
               sufixIconButton: dateTimeIconButton(),
               controller: _dateController,
@@ -208,7 +208,7 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
                 context,
               )!.newReceiptFormHintCardOrCash,
               iconData: Icons.card_travel,
-              validateFunction: ReceiptValidator.validateCardError,
+              validateFunction: validateCard,
               onSaved: onCardSaved,
               initialValue: widget.receipt?.card,
             ),
@@ -405,5 +405,69 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
         ),
       ),
     );
+  }
+
+  String? validateAmount(String? value) {
+    final ReceiptValidationStatus status = ReceiptValidator.validateAmount(
+      value ?? '',
+    );
+
+    if (status == ReceiptValidationStatus.notANumber) {
+      return AppLocalizations.of(
+        context,
+      )?.newReceiptFormValidateAmountNotANumber;
+    } else if (status == ReceiptValidationStatus.success) {
+      return null;
+    }
+
+    return null;
+  }
+
+  String? validateStoreName(String? value) {
+    final ReceiptValidationStatus status = ReceiptValidator.validateStoreName(
+      value ?? '',
+    );
+
+    if (status == ReceiptValidationStatus.success) {
+      return null;
+    }
+
+    return null;
+  }
+
+  String? validateDate(String? value) {
+    final ReceiptValidationStatus status = ReceiptValidator.validateDate(
+      value ?? '',
+    );
+
+    if (status == ReceiptValidationStatus.dateNotChosen) {
+      return AppLocalizations.of(
+        context,
+      )?.newReceiptFormValidateDateDateNotChosen;
+    } else if (status == ReceiptValidationStatus.success) {
+      return null;
+    }
+
+    return null;
+  }
+
+  String? validateCard(String? value) {
+    final ReceiptValidationStatus status = ReceiptValidator.validateCard(
+      value ?? '',
+    );
+
+    if (status == ReceiptValidationStatus.invalidCardNumber) {
+      return AppLocalizations.of(
+        context,
+      )?.newReceiptFormValidateCardInvalidCardNumber;
+    } else if (status == ReceiptValidationStatus.invalidCardValue) {
+      return AppLocalizations.of(
+        context,
+      )?.newReceiptFormValidateCardInvalidCardValue;
+    } else if (status == ReceiptValidationStatus.success) {
+      return null;
+    }
+
+    return null;
   }
 }

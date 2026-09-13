@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spending_docs/features/common/presentation/widgets/generic_input_field.dart';
 import 'package:spending_docs/features/receipt_items/domain/receipt_item_validator.dart';
+import 'package:spending_docs/l10n/app_localizations.dart';
 
 class ReceiptItemFormRow extends StatefulWidget {
   final String price;
@@ -49,7 +50,7 @@ class _ReceiptItemFormRowState extends State<ReceiptItemFormRow> {
       labelText: '',
       hintText: '',
       iconData: Icons.label,
-      validateFunction: ReceiptItemValidator.validateItemNameError,
+      validateFunction: validateItemName,
       onSaved: (_) {},
       onChanged: widget.onItemNameChanged,
       initialValue: widget.itemName,
@@ -61,7 +62,7 @@ class _ReceiptItemFormRowState extends State<ReceiptItemFormRow> {
       labelText: '',
       hintText: '',
       iconData: Icons.attach_money,
-      validateFunction: ReceiptItemValidator.validatePriceError,
+      validateFunction: validatePrice,
       onSaved: (_) {},
       onChanged: widget.onPriceChanged,
       initialValue: widget.price,
@@ -74,5 +75,29 @@ class _ReceiptItemFormRowState extends State<ReceiptItemFormRow> {
 
   Widget removeIconButton() {
     return IconButton(onPressed: widget.onRemove, icon: Icon(Icons.remove));
+  }
+
+  String? validateItemName(String? value) {
+    final ReceiptItemValidationStatus result =
+        ReceiptItemValidator.validateItemName(value ?? '');
+    if (result == ReceiptItemValidationStatus.success) {
+      return null;
+    }
+
+    return null;
+  }
+
+  String? validatePrice(String? value) {
+    final ReceiptItemValidationStatus status =
+        ReceiptItemValidator.validatePrice(value ?? '');
+    if (status == ReceiptItemValidationStatus.notANumber) {
+      return AppLocalizations.of(
+        context,
+      )?.newReceiptItemFormValidateAmountNotANumber;
+    } else if (status == ReceiptItemValidationStatus.success) {
+      return null;
+    }
+
+    return null;
   }
 }

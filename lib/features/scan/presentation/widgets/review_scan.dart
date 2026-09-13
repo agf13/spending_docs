@@ -8,6 +8,7 @@ import 'package:spending_docs/features/receipt_items/data/repositories/receipt_i
 import 'package:spending_docs/features/receipts/blocs/receipt_list_bloc.dart';
 import 'package:spending_docs/features/receipts/data/repositories/receipts_repository.dart';
 import 'package:spending_docs/features/scan/data/models/scanned_receipt_dto.dart';
+import 'package:spending_docs/features/scan/data/models/scanned_receipt_item_dto.dart';
 import 'package:spending_docs/features/scan/domain/review_receipt_form_state.dart';
 import 'package:spending_docs/features/scan/presentation/widgets/receipt_header_details.dart';
 import 'package:spending_docs/l10n/app_localizations.dart';
@@ -24,11 +25,24 @@ class _ReviewScanState extends State<ReviewScan> {
   final _formKey = GlobalKey<FormState>();
   final _animatedKey = GlobalKey<AnimatedListState>();
   final ReviewReceiptFormState _receiptFormState = ReviewReceiptFormState();
+  final ScrollController _scrollController = ScrollController();
+  late double _estimatedItemRowHeight = 0;
+  late double _estimatedHeadersAndDividerHeight = 0;
+
+  /*
+    Index 0 has the key for the widget displaying headers and Index 1 for the divider
+    All order indexes are corelated to the list of items inside _receiptFormState
+  */
+  final List<GlobalKey> _listKeys = [];
 
   @override
   void initState() {
     super.initState();
+    initFromDto();
+    initListKeys();
+  }
 
+  void initFromDto() {
     _receiptFormState.amount = widget.scannedReceiptDto.amount.toString();
     _receiptFormState.storeName = widget.scannedReceiptDto.storeName ?? '';
     _receiptFormState.card = widget.scannedReceiptDto.card;
@@ -37,14 +51,24 @@ class _ReviewScanState extends State<ReviewScan> {
         .split('.')
         .first;
 
-    final itemList = widget.scannedReceiptDto.receiptItemList;
-    for (int index = 0; index < itemList.length; index++) {
+    for (final ScannedReceiptItemDto item
+        in widget.scannedReceiptDto.receiptItemList) {
       ReviewReceiptItemState itemState = ReviewReceiptItemState(
-        itemName: itemList[index].itemName,
-        price: itemList[index].price.toString(),
+        itemName: item.itemName,
+        price: item.price.toString(),
       );
 
       _receiptFormState.items.add(itemState);
+    }
+  }
+
+  void initListKeys() {
+    _listKeys.add(GlobalKey()); // for headers
+    _listKeys.add(GlobalKey()); // for divider
+
+    // for all items on a receipt (except headers)
+    for (final _ in _receiptFormState.items) {
+      _listKeys.add(GlobalKey());
     }
   }
 
@@ -99,6 +123,7 @@ class _ReviewScanState extends State<ReviewScan> {
   Widget receiptDetails() {
     return AnimatedList(
       key: _animatedKey,
+      controller: _scrollController,
       initialItemCount: _receiptFormState.items.length + 3,
       itemBuilder: (context, index, animation) => Padding(
         padding: const EdgeInsets.all(5),
@@ -114,6 +139,7 @@ class _ReviewScanState extends State<ReviewScan> {
   ) {
     if (index == 0) {
       return ReceiptHeaderDetails(
+        key: _listKeys[0],
         initialValueAmount: _receiptFormState.amount,
         initialValueDate: _receiptFormState.date,
         initialValueStoreName: _receiptFormState.storeName,
@@ -123,14 +149,21 @@ class _ReviewScanState extends State<ReviewScan> {
             _receiptFormState.storeName = value ?? '',
         onDateChanged: (value) => _receiptFormState.date = value ?? '',
         onCardChanged: (value) => _receiptFormState.card = value ?? '',
-        extraCheck: checkAmountConsistency,
+        makeTotalItemSum: _receiptFormState.itemPriceSum,
       );
     } else if (index == 1) {
-      return Divider();
+      return Divider(key: _listKeys[1]);
     } else if (index == _receiptFormState.items.length + 2) {
       return addButton();
     } else {
+      // Get height of GenericInputFields. We have the first element created
+      if (_estimatedHeadersAndDividerHeight == 0) {
+        _estimateHeights();
+      }
+
+      // Continue normal building
       return receiptItemFormRowAnimated(
+        _listKeys[index],
         _receiptFormState.items[index - 2],
         animation,
         index,
@@ -139,6 +172,7 @@ class _ReviewScanState extends State<ReviewScan> {
   }
 
   Widget receiptItemFormRowAnimated(
+    GlobalKey key,
     ReviewReceiptItemState itemState,
     Animation animation,
     int? index,
@@ -153,6 +187,7 @@ class _ReviewScanState extends State<ReviewScan> {
           .drive(CurveTween(curve: Curves.easeOut))
           .drive(offsetTween),
       child: ReceiptItemFormRow(
+        key: key,
         price: itemState.price,
         itemName: itemState.itemName,
         onItemNameChanged: (value) {
@@ -165,7 +200,7 @@ class _ReviewScanState extends State<ReviewScan> {
         },
         onRemove: () {
           if (index == null) return;
-          onRemoveItem(index - 2);
+          onRemoveItem(index);
         },
       ),
     );
@@ -271,12 +306,18 @@ class _ReviewScanState extends State<ReviewScan> {
       _receiptFormState.items.length + 1,
       duration: Duration(milliseconds: 200),
     );
+
+    _listKeys.add(GlobalKey());
   }
 
   void onRemoveItem(int index) {
-    ReviewReceiptItemState itemState = _receiptFormState.items.removeAt(index);
+    ReviewReceiptItemState itemState = _receiptFormState.items.removeAt(
+      index - 2, // conversion from AnimtedList index to actual items index
+    );
+    GlobalKey itemKey = _listKeys.removeAt(index); // No conversion needed
+
     _animatedKey.currentState?.removeItem(index + 2, (context, animation) {
-      return receiptItemFormRowAnimated(itemState, animation, null);
+      return receiptItemFormRowAnimated(itemKey, itemState, animation, null);
     }, duration: Duration(milliseconds: 200));
   }
 
@@ -294,6 +335,7 @@ class _ReviewScanState extends State<ReviewScan> {
   }
 
   void onSave() async {
+    _ensureFirstErrorItemVisible();
     if (_formKey.currentState?.validate() == true) {
       await saveToMemory(_receiptFormState);
 
@@ -332,6 +374,52 @@ class _ReviewScanState extends State<ReviewScan> {
 
       context.read<ReceiptItemsRepository>().add(item);
       context.read<ReceiptListBloc>().add(ReceiptRefresh());
+    }
+  }
+
+  int? _ensureFirstErrorItemVisible() {
+    int? index = _receiptFormState.firstInvalid();
+    if (index == null) return null;
+
+    double targetOffset = 0;
+
+    if (index >= 0) {
+      // Jump to the item with error
+      targetOffset =
+          _estimatedHeadersAndDividerHeight +
+          (index - 1) * _estimatedItemRowHeight;
+    } else if (index < -2) {
+      // Jump to the place in the headers with error
+      targetOffset = 2 * _estimatedItemRowHeight;
+    }
+
+    // Animate aproximately to first error item
+    _scrollController
+        .animateTo(
+          targetOffset,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+        )
+        .then((_) {
+          // Call the validation again to properly show error messages
+          _formKey.currentState?.validate();
+          return null;
+        });
+
+    return index;
+  }
+
+  /*
+    This is only called on the builder of animated list in order to have at least one item built before this function is called
+  */
+  void _estimateHeights() {
+    double? headersHeight =
+        (_listKeys[0].currentContext?.findRenderObject() as RenderBox?)
+            ?.size
+            .height;
+    if (headersHeight != null) {
+      _estimatedHeadersAndDividerHeight = headersHeight;
+      _estimatedItemRowHeight = (headersHeight) / 4 - 5;
     }
   }
 }

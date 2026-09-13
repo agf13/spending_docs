@@ -4,14 +4,13 @@ class GenericInputField extends StatefulWidget {
   final String labelText;
   final String hintText;
   final IconData iconData;
-  final Function(String?, BuildContext) validateFunction;
+  final String? Function(String?) validateFunction;
   final Function(String) onSaved;
   final TextInputType? keyboardType;
   final Widget? sufixIconButton;
   final TextEditingController? controller;
   final String? initialValue;
   final bool readOnly;
-  final Function(String?)? extraValueValidation;
   final Function(String?)? onChanged;
 
   const GenericInputField({
@@ -25,7 +24,6 @@ class GenericInputField extends StatefulWidget {
     this.sufixIconButton,
     this.controller,
     this.initialValue,
-    this.extraValueValidation,
     this.onChanged,
     this.readOnly = false,
   });
@@ -67,15 +65,7 @@ class _GenericInputFieldState extends State<GenericInputField> {
               suffixIcon: widget.sufixIconButton,
               errorMaxLines: 5,
             ),
-            validator: (value) {
-              String? errorText = widget.validateFunction(value, context);
-              if (errorText == null &&
-                  widget.extraValueValidation?.call(value) != null) {
-                errorText = widget.extraValueValidation!(value);
-              }
-
-              return errorText;
-            },
+            validator: widget.validateFunction,
             onSaved: (value) => widget.onSaved(value ?? ''),
           ),
         ),
