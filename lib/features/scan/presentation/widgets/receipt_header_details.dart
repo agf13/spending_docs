@@ -14,7 +14,10 @@ class ReceiptHeaderDetails extends StatefulWidget {
   final Function(String?) onStoreNameChanged;
   final Function(String?) onDateChanged;
   final Function(String?) onCardChanged;
-  final VoidCallback extraCheck;
+  /*
+    Calculate the sum of the item list associated with this receipt's headers
+  */
+  final double? Function() makeTotalItemSum;
 
   const ReceiptHeaderDetails({
     super.key,
@@ -26,7 +29,7 @@ class ReceiptHeaderDetails extends StatefulWidget {
     required this.onStoreNameChanged,
     required this.onDateChanged,
     required this.onCardChanged,
-    required this.extraCheck,
+    required this.makeTotalItemSum,
   });
 
   @override
@@ -64,8 +67,7 @@ class _ReceiptHeaderDetailsState extends State<ReceiptHeaderDetails> {
       labelText: AppLocalizations.of(context)!.scanReceiptResultFormLabelAmout,
       hintText: '',
       iconData: Icons.money,
-      validateFunction: ReceiptValidator.validateAmountError,
-      extraValueValidation: (_) => widget.extraCheck(),
+      validateFunction: validateAmount,
       onSaved: (_) {},
       onChanged: widget.onAmountChanged,
       initialValue: widget.initialValueAmount,
@@ -83,7 +85,7 @@ class _ReceiptHeaderDetailsState extends State<ReceiptHeaderDetails> {
       )!.scanReceiptResultFormLabelStoreName,
       hintText: '',
       iconData: Icons.store,
-      validateFunction: ReceiptValidator.validateStoreNameError,
+      validateFunction: validateStoreName,
       onSaved: (_) {},
       onChanged: widget.onStoreNameChanged,
       initialValue: widget.initialValueStoreName,
@@ -96,7 +98,7 @@ class _ReceiptHeaderDetailsState extends State<ReceiptHeaderDetails> {
       labelText: AppLocalizations.of(context)!.scanReceiptResultFormLabelDate,
       hintText: '',
       iconData: Icons.calendar_month,
-      validateFunction: ReceiptValidator.validateDateError,
+      validateFunction: validateDate,
       onSaved: (_) {},
       onChanged: widget.onDateChanged,
       sufixIconButton: dateTimeIconButton(),
@@ -109,7 +111,7 @@ class _ReceiptHeaderDetailsState extends State<ReceiptHeaderDetails> {
       labelText: AppLocalizations.of(context)!.scanReceiptResultFormLabelCard,
       hintText: '',
       iconData: Icons.card_travel,
-      validateFunction: ReceiptValidator.validateCardError,
+      validateFunction: validateCard,
       onSaved: (_) {},
       onChanged: widget.onCardChanged,
       initialValue: widget.initialValueCard,
@@ -131,5 +133,87 @@ class _ReceiptHeaderDetailsState extends State<ReceiptHeaderDetails> {
       widget.onDateChanged(dateAsString);
       _dateController.text = dateAsString;
     }
+  }
+
+  String? validateAmount(String? value) {
+    final ReceiptValidationStatus status = ReceiptValidator.validateAmount(
+      value ?? '',
+    );
+
+    if (status == ReceiptValidationStatus.notANumber) {
+      return AppLocalizations.of(
+        context,
+      )?.newReceiptFormValidateAmountNotANumber;
+    } else if (status == ReceiptValidationStatus.success) {
+      // Consistency check
+      double? totalItemSum = widget.makeTotalItemSum();
+
+      // If the total sum is null, not all prices are validated so ignore this check
+      if (totalItemSum == null) {
+        return null;
+      }
+
+      // Avoid double quirks
+      int coefficient = 1000000;
+      totalItemSum = (totalItemSum * coefficient).round() / coefficient;
+
+      // Check equality
+      double declaredTotal = double.tryParse(value ?? '') ?? 0;
+      if (totalItemSum != declaredTotal) {
+        return AppLocalizations.of(
+          context,
+        )?.scanReceiptResultTotalAmountDifferent(totalItemSum);
+      }
+    }
+
+    return null;
+  }
+
+  String? validateStoreName(String? value) {
+    final ReceiptValidationStatus status = ReceiptValidator.validateStoreName(
+      value ?? '',
+    );
+
+    if (status == ReceiptValidationStatus.success) {
+      return null;
+    }
+
+    return null;
+  }
+
+  String? validateDate(String? value) {
+    final ReceiptValidationStatus status = ReceiptValidator.validateDate(
+      value ?? '',
+    );
+
+    if (status == ReceiptValidationStatus.dateNotChosen) {
+      return AppLocalizations.of(
+        context,
+      )?.newReceiptFormValidateDateDateNotChosen;
+    } else if (status == ReceiptValidationStatus.success) {
+      return null;
+    }
+
+    return null;
+  }
+
+  String? validateCard(String? value) {
+    final ReceiptValidationStatus status = ReceiptValidator.validateCard(
+      value ?? '',
+    );
+
+    if (status == ReceiptValidationStatus.invalidCardNumber) {
+      return AppLocalizations.of(
+        context,
+      )?.newReceiptFormValidateCardInvalidCardNumber;
+    } else if (status == ReceiptValidationStatus.invalidCardValue) {
+      return AppLocalizations.of(
+        context,
+      )?.newReceiptFormValidateCardInvalidCardValue;
+    } else if (status == ReceiptValidationStatus.success) {
+      return null;
+    }
+
+    return null;
   }
 }
