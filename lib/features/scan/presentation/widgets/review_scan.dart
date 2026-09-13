@@ -26,8 +26,8 @@ class _ReviewScanState extends State<ReviewScan> {
   final _animatedKey = GlobalKey<AnimatedListState>();
   final ReviewReceiptFormState _receiptFormState = ReviewReceiptFormState();
   final ScrollController _scrollController = ScrollController();
-  late double _estimatedItemRowHeight = 0;
-  late double _estimatedHeadersAndDividerHeight = 0;
+  late double _itemRowHeight = 0;
+  late double _headersHeight = 0;
 
   /*
     Index 0 has the key for the widget displaying headers and Index 1 for the divider
@@ -152,13 +152,17 @@ class _ReviewScanState extends State<ReviewScan> {
         makeTotalItemSum: _receiptFormState.itemPriceSum,
       );
     } else if (index == 1) {
+      if (_headersHeight == 0) {
+        _getHeaderHeight();
+      }
+
       return Divider(key: _listKeys[1]);
     } else if (index == _receiptFormState.items.length + 2) {
       return addButton();
     } else {
       // Get height of GenericInputFields. We have the first element created
-      if (_estimatedHeadersAndDividerHeight == 0) {
-        _estimateHeights();
+      if (_itemRowHeight == 0 && index > 2) {
+        _getItemRowHeight();
       }
 
       // Continue normal building
@@ -385,12 +389,10 @@ class _ReviewScanState extends State<ReviewScan> {
 
     if (index >= 0) {
       // Jump to the item with error
-      targetOffset =
-          _estimatedHeadersAndDividerHeight +
-          (index - 1) * _estimatedItemRowHeight;
+      targetOffset = _headersHeight + (index - 1) * _itemRowHeight;
     } else if (index < -2) {
       // Jump to the place in the headers with error
-      targetOffset = 2 * _estimatedItemRowHeight;
+      targetOffset = _headersHeight / 2;
     }
 
     // Animate aproximately to first error item
@@ -412,14 +414,27 @@ class _ReviewScanState extends State<ReviewScan> {
   /*
     This is only called on the builder of animated list in order to have at least one item built before this function is called
   */
-  void _estimateHeights() {
+  void _getHeaderHeight() {
     double? headersHeight =
         (_listKeys[0].currentContext?.findRenderObject() as RenderBox?)
             ?.size
             .height;
     if (headersHeight != null) {
-      _estimatedHeadersAndDividerHeight = headersHeight;
-      _estimatedItemRowHeight = (headersHeight) / 4 - 5;
+      _headersHeight = headersHeight;
+    }
+  }
+
+  /*
+    This is only called when at least a second item is build from the receipt's item list
+  */
+  void _getItemRowHeight() {
+    double? itemRowHeight =
+        (_listKeys[2].currentContext?.findRenderObject() as RenderBox?)
+            ?.size
+            .height;
+    if (itemRowHeight != null) {
+      // Account for all items being enclodes in Padding with EdgeInsets.all(5)
+      _itemRowHeight = itemRowHeight + 10;
     }
   }
 }
