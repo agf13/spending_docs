@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
 import 'package:spending_docs/core/database/app_database.dart' show Receipt;
-import 'package:spending_docs/features/receipts/data/repositories/receipts_repository.dart'
-    show ReceiptsRepository;
 import 'package:spending_docs/features/receipts/presentation/widgets/receipt_delete_confirm.dart';
 import 'package:spending_docs/features/receipts/presentation/widgets/receipt_form.dart';
 import 'package:spending_docs/l10n/app_localizations.dart';

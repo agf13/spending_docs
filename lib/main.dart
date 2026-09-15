@@ -8,6 +8,7 @@ import 'package:spending_docs/features/receipt_items/data/repositories/receipt_i
 import 'package:spending_docs/features/receipts/blocs/receipt_list_bloc.dart';
 import 'package:spending_docs/features/receipts/data/repositories/receipts_repository.dart';
 import 'package:spending_docs/features/scan/cubits/receipt_scan_image_cubit.dart';
+import 'package:spending_docs/features/search/blocs/search_bloc.dart';
 import 'package:spending_docs/features/translation/bloc/translation_cubit.dart';
 import 'package:spending_docs/l10n/app_localizations.dart';
 import 'package:spending_docs/themes/app_theme.dart';
@@ -53,6 +54,14 @@ class MyApp extends StatelessWidget {
             create: (context) {
               final repository = context.read<ReceiptItemsRepository>();
               return ReceiptItemsListCubit(repository)..getItems();
+            },
+          ),
+
+          // Handle search screen
+          BlocProvider<SearchBloc>(
+            create: (context) {
+              final repository = context.read<ReceiptsRepository>();
+              return SearchBloc(repository: repository);
             },
           ),
 

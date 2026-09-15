@@ -9,6 +9,7 @@ import 'package:spending_docs/features/receipts/presentation/widgets/receipt_for
 import 'package:spending_docs/features/scan/cubits/receipt_scan_image_cubit.dart';
 import 'package:spending_docs/features/scan/presentation/utils/image_picker_util.dart';
 import 'package:spending_docs/features/scan/presentation/widgets/scan_form.dart';
+import 'package:spending_docs/features/search/presentation/widgets/search_list_view.dart';
 import 'package:spending_docs/features/translation/presentation/widgets/segmented_locale_switch.dart';
 import 'package:spending_docs/l10n/app_localizations.dart'
     show AppLocalizations;
@@ -26,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentPage = 0; // To handle the correct widget to show
   List<Widget> widgetList = [
     ReceiptListView(),
-    FilterWidget(),
+    SearchListView(),
   ]; // A list of widgets to show using _currentPage as index
 
   final ImagePickerUtil _imagePickerUtil = ImagePickerUtil();
@@ -50,7 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget body() {
-    return IndexedStack(index: _currentPage, children: widgetList);
+    //return IndexedStack(index: _currentPage, children: widgetList);
+    return widgetList[_currentPage];
   }
 
   NavigationBar navigationBar() {
