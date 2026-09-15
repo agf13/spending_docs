@@ -55,7 +55,6 @@ class DateFormatterCustom {
     Swtiches between: yyyy-mm-dd and dd-mm-yyyy
   */
   static String switchDayAndYearNoTime(String dateString) {
-    print('received: $dateString');
     final List<String> terms = dateString.split('-');
 
     String first = terms.first;
