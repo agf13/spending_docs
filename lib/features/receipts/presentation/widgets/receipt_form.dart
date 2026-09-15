@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spending_docs/core/database/app_database.dart'
     show ReceiptsCompanion, Receipt;
-import 'package:spending_docs/features/common/presentation/widgets/dateTimePicker.dart';
+import 'package:spending_docs/features/common/presentation/widgets/date_time_icon_button.dart';
 import 'package:spending_docs/features/common/presentation/widgets/generic_input_field.dart';
 import 'package:spending_docs/features/receipts/blocs/receipt_list_bloc.dart';
 import 'package:spending_docs/features/receipts/data/repositories/receipts_repository.dart';
@@ -32,16 +32,13 @@ class ReceiptFormBody extends StatefulWidget {
 }
 
 class _ReceiptFormBodyState extends State<ReceiptFormBody> {
-  final double _fieldWidth = 350;
-  final double _buttonWidth = 120;
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _dateController = TextEditingController();
 
   late double _amount;
   late String _storeName;
   late String _card;
-  static DateTime _dateTime = DateTime.now();
+  static final DateTime _dateTime = DateTime.now();
 
   int? _receiptId;
 
@@ -194,7 +191,7 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
               iconData: Icons.calendar_month,
               validateFunction: validateDate,
               onSaved: onDateSaved,
-              sufixIconButton: dateTimeIconButton(),
+              sufixIconButton: DateTimeIconButton(onPressed: onDateTimePicked),
               controller: _dateController,
               readOnly: true,
             ),
@@ -235,19 +232,50 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
     );
   }
 
-  Widget dateTimeIconButton() {
-    return IconButton(
-      onPressed: handlePickedDateTime,
-      icon: Icon(Icons.calendar_today),
+  Widget formButtons() {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          // Cancel button
+          formButton(
+            label: AppLocalizations.of(context)!.newReceiptFormCancel,
+            onPressed: () => onCancel(),
+          ),
+
+          // Save button
+          formButton(
+            label: AppLocalizations.of(context)!.newReceiptFormSave,
+            onPressed: () => onSave(),
+          ),
+        ],
+      ),
     );
   }
 
-  Future<void> handlePickedDateTime() async {
-    final pickedDateTime = await pickDateTime(context);
-    if (pickedDateTime != null) {
-      _dateTime = pickedDateTime;
-      _dateController.text = _dateTime.toString().split('.')[0];
-    }
+  Widget formButton({required String label, required Function() onPressed}) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Text(
+          label,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> onDateTimePicked(String dateTimeString) async {
+    _dateController.text = dateTimeString;
   }
 
   /*
@@ -308,30 +336,6 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
     return;
   }
 
-  Widget formButtons() {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          // Cancel button
-          formButton(
-            label: AppLocalizations.of(context)!.newReceiptFormCancel,
-            onPressed: () => onCancel(),
-          ),
-
-          // Save button
-          formButton(
-            label: AppLocalizations.of(context)!.newReceiptFormSave,
-            onPressed: () => onSave(),
-          ),
-        ],
-      ),
-    );
-  }
-
   void onCancel() {
     Navigator.of(context).pop();
   }
@@ -387,24 +391,6 @@ class _ReceiptFormBodyState extends State<ReceiptFormBody> {
 
     context.read<ReceiptsRepository>().update(updatedReceipt);
     context.read<ReceiptListBloc>().add(ReceiptRefresh());
-  }
-
-  Widget formButton({required String label, required Function() onPressed}) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Text(
-          label,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-        ),
-      ),
-    );
   }
 
   String? validateAmount(String? value) {

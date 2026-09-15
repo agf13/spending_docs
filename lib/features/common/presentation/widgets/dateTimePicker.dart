@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spending_docs/features/common/blocs/timePickerCubit.dart';
 
-Future<DateTime?> pickDateTime(BuildContext context) async {
+Future<DateTime?> pickDateTime(
+  BuildContext context, {
+  bool onlyPickDate = false,
+}) async {
   try {
     // Pick date
     final DateTime? pickedDate = await showDatePicker(
@@ -19,6 +22,9 @@ Future<DateTime?> pickDateTime(BuildContext context) async {
     // If the widget calling this is no longer mounted, return
     if (!context.mounted) return null;
 
+    if (onlyPickDate) {
+      return mergeDateTime(pickedDate, Duration.zero);
+    }
     // Wait for picking time
     await showModalBottomSheet(
       context: context,
@@ -41,14 +47,6 @@ Future<DateTime?> pickDateTime(BuildContext context) async {
   } catch (e) {
     return null;
   }
-}
-
-DateTime mergeDateTime(DateTime pickedDate, Duration chosenDuration) {
-  return DateTime(
-    pickedDate.year,
-    pickedDate.month,
-    pickedDate.day,
-  ).add(chosenDuration);
 }
 
 class TimePicker extends StatefulWidget {
@@ -89,4 +87,12 @@ class _TimePickerState extends State<TimePicker> {
       ),
     );
   }
+}
+
+DateTime mergeDateTime(DateTime pickedDate, Duration chosenDuration) {
+  return DateTime(
+    pickedDate.year,
+    pickedDate.month,
+    pickedDate.day,
+  ).add(chosenDuration);
 }

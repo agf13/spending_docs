@@ -5,6 +5,7 @@
 
   "homeTitle": "Acasa",
   "homeDataFetchError": "Eroare la incarcarea datelor",
+  "homeEasterEggTitle": "easter egg title",
   
   "appBarNavigationHome": "Acasa",
   "appBarNavigationScan": "Scaneaza",
@@ -57,5 +58,14 @@
 
   "confirmationPopupDeleteReceiptTile": "Are you sure?",
   "confirmationPopupDelete": "Sterge",
-  "confirmationPopupCancel": "Renunta"
+  "confirmationPopupCancel": "Renunta",
+
+  "searchScreenTitle": "Cauta",
+  "searchScreenTo": "La",
+  "searchScreenFrom": "De la",
+  "searchScreenStoreName": "magazin",
+  "searchScreenAmount": "total",
+  "searchScreenDate": "data",
+  "searchScreenCard": "card",
+  "searchScreenUnknownError": "Eroare neasteptata. Incearca sa redeschizi aplicatia"
 }

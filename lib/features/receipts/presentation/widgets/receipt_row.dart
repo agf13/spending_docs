@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
 import 'package:spending_docs/core/database/app_database.dart' show Receipt;
-import 'package:spending_docs/features/receipts/data/repositories/receipts_repository.dart'
-    show ReceiptsRepository;
+import 'package:spending_docs/core/formatters/date_formatter_custom.dart';
 import 'package:spending_docs/features/receipts/presentation/widgets/receipt_delete_confirm.dart';
 import 'package:spending_docs/features/receipts/presentation/widgets/receipt_form.dart';
 import 'package:spending_docs/l10n/app_localizations.dart';
@@ -87,16 +85,16 @@ class _ReceiptRowState extends State<ReceiptRow> {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Store name and price
-          PriceAndStore(),
+          priceAndStore(),
 
           // Card used and date
-          DateAndCard(),
+          dateAndCard(),
         ],
       ),
     );
   }
 
-  Widget PriceAndStore() {
+  Widget priceAndStore() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,13 +111,19 @@ class _ReceiptRowState extends State<ReceiptRow> {
     );
   }
 
-  Widget DateAndCard() {
+  Widget dateAndCard() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Date
-        Expanded(child: detail(dateFormat(widget.receipt.date))),
+        Expanded(
+          child: detail(
+            DateFormatterCustom.dayMonthYearHourMinuteSecond(
+              widget.receipt.date,
+            ),
+          ),
+        ),
 
         // Spacer
         SizedBox(width: 5),
@@ -208,19 +212,5 @@ class _ReceiptRowState extends State<ReceiptRow> {
       context: context,
       receiptId: widget.receipt.id,
     );
-  }
-
-  String dateFormat(DateTime date) {
-    const padSymbol = '0';
-
-    String output = '';
-    output += date.day.toString().padLeft(2, padSymbol);
-    output += '-${date.month.toString().padLeft(2, padSymbol)}';
-    output += '-${date.year}';
-    output += ' ${date.hour.toString().padLeft(2, padSymbol)}';
-    output += ':${date.minute.toString().padLeft(2, padSymbol)}';
-    output += ':${date.second.toString().padLeft(2, padSymbol)}';
-
-    return output;
   }
 }

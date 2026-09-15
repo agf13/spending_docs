@@ -24,6 +24,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeDataFetchError => 'Error loading data';
 
   @override
+  String get homeEasterEggTitle => 'Easter Egg Title';
+
+  @override
   String get appBarNavigationHome => 'Home';
 
   @override
@@ -139,4 +142,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmationPopupCancel => 'Cancel';
+
+  @override
+  String get searchScreenTitle => 'Search';
+
+  @override
+  String get searchScreenTo => 'to';
+
+  @override
+  String get searchScreenFrom => 'from';
+
+  @override
+  String get searchScreenStoreName => 'store name';
+
+  @override
+  String get searchScreenAmount => 'amount';
+
+  @override
+  String get searchScreenDate => 'date';
+
+  @override
+  String get searchScreenCard => 'card';
+
+  @override
+  String get searchScreenUnknownError =>
+      'Unkwnown error. Try to reopen the app';
 }
