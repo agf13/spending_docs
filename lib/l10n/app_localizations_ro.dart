@@ -24,6 +24,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get homeDataFetchError => 'Eroare la incarcarea datelor';
 
   @override
+  String get homeEasterEggTitle => 'easter egg title';
+
+  @override
   String get appBarNavigationHome => 'Acasa';
 
   @override
@@ -141,4 +144,29 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get confirmationPopupCancel => 'Renunta';
+
+  @override
+  String get searchScreenTitle => 'Cauta';
+
+  @override
+  String get searchScreenTo => 'La';
+
+  @override
+  String get searchScreenFrom => 'De la';
+
+  @override
+  String get searchScreenStoreName => 'magazin';
+
+  @override
+  String get searchScreenAmount => 'total';
+
+  @override
+  String get searchScreenDate => 'data';
+
+  @override
+  String get searchScreenCard => 'card';
+
+  @override
+  String get searchScreenUnknownError =>
+      'Eroare neasteptata. Incearca sa redeschizi aplicatia';
 }

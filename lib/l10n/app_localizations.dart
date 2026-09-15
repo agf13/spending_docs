@@ -128,6 +128,12 @@ abstract class AppLocalizations {
   /// **'Error loading data'**
   String get homeDataFetchError;
 
+  /// No description provided for @homeEasterEggTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Easter Egg Title'**
+  String get homeEasterEggTitle;
+
   /// No description provided for @appBarNavigationHome.
   ///
   /// In en, this message translates to:
@@ -351,6 +357,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get confirmationPopupCancel;
+
+  /// No description provided for @searchScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchScreenTitle;
+
+  /// No description provided for @searchScreenTo.
+  ///
+  /// In en, this message translates to:
+  /// **'to'**
+  String get searchScreenTo;
+
+  /// No description provided for @searchScreenFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'from'**
+  String get searchScreenFrom;
+
+  /// No description provided for @searchScreenStoreName.
+  ///
+  /// In en, this message translates to:
+  /// **'store name'**
+  String get searchScreenStoreName;
+
+  /// No description provided for @searchScreenAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'amount'**
+  String get searchScreenAmount;
+
+  /// No description provided for @searchScreenDate.
+  ///
+  /// In en, this message translates to:
+  /// **'date'**
+  String get searchScreenDate;
+
+  /// No description provided for @searchScreenCard.
+  ///
+  /// In en, this message translates to:
+  /// **'card'**
+  String get searchScreenCard;
+
+  /// No description provided for @searchScreenUnknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unkwnown error. Try to reopen the app'**
+  String get searchScreenUnknownError;
 }
 
 class _AppLocalizationsDelegate

@@ -16,6 +16,7 @@
 
   "homeTitle": "Home",
   "homeDataFetchError": "Error loading data",
+  "homeEasterEggTitle": "Easter Egg Title",
   
   "appBarNavigationHome": "Home",
   "appBarNavigationScan": "Scan",
@@ -69,5 +70,14 @@
 
   "confirmationPopupDeleteReceiptTile": "Are you sure?",
   "confirmationPopupDelete": "Delete",
-  "confirmationPopupCancel": "Cancel"
+  "confirmationPopupCancel": "Cancel",
+
+  "searchScreenTitle": "Search",
+  "searchScreenTo": "to",
+  "searchScreenFrom": "from",
+  "searchScreenStoreName": "store name",
+  "searchScreenAmount": "amount",
+  "searchScreenDate": "date",
+  "searchScreenCard": "card",
+  "searchScreenUnknownError": "Unkwnown error. Try to reopen the app"
 }
