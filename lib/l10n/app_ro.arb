@@ -67,5 +67,8 @@
   "searchScreenAmount": "total",
   "searchScreenDate": "data",
   "searchScreenCard": "card",
-  "searchScreenUnknownError": "Eroare neasteptata. Incearca sa redeschizi aplicatia"
+  "searchScreenUnknownError": "Eroare neasteptata. Incearca sa redeschizi aplicatia",
+
+  "firebaseSearchTitle": "Bonuri Din Firebase",
+  "firebaseNavMenuButton": "Firebase"
 }

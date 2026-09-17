@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "714328318577",
+    "project_id": "spending-docs",
+    "storage_bucket": "spending-docs.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:714328318577:android:9faf8bc863348b196db1d0",
+        "android_client_info": {
+          "package_name": "com.example.spending_docs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiXa6uzgGkHstPj_BuodUCisZBAYqf_aM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

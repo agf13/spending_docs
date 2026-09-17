@@ -405,6 +405,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unkwnown error. Try to reopen the app'**
   String get searchScreenUnknownError;
+
+  /// No description provided for @firebaseSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipts From Firebase'**
+  String get firebaseSearchTitle;
+
+  /// No description provided for @firebaseNavMenuButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Firebase'**
+  String get firebaseNavMenuButton;
 }
 
 class _AppLocalizationsDelegate

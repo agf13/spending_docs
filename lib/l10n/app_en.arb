@@ -79,5 +79,8 @@
   "searchScreenAmount": "amount",
   "searchScreenDate": "date",
   "searchScreenCard": "card",
-  "searchScreenUnknownError": "Unkwnown error. Try to reopen the app"
+  "searchScreenUnknownError": "Unkwnown error. Try to reopen the app",
+
+  "firebaseSearchTitle": "Receipts From Firebase",
+  "firebaseNavMenuButton": "Firebase"
 }

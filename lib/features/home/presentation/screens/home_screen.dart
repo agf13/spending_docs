@@ -9,6 +9,7 @@ import 'package:spending_docs/features/scan/cubits/receipt_scan_image_cubit.dart
 import 'package:spending_docs/features/scan/presentation/utils/image_picker_util.dart';
 import 'package:spending_docs/features/scan/presentation/widgets/scan_form.dart';
 import 'package:spending_docs/features/search/presentation/widgets/search_list_view.dart';
+import 'package:spending_docs/features/search_firebase/presentation/widgets/receipt_search.dart';
 import 'package:spending_docs/features/translation/presentation/widgets/segmented_locale_switch.dart';
 import 'package:spending_docs/l10n/app_localizations.dart'
     show AppLocalizations;
@@ -28,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> widgetList = [
     ReceiptListView(),
     SearchListView(),
+    ReceiptSearch(),
   ]; // A list of widgets to show using _currentPage as index
 
   final ImagePickerUtil _imagePickerUtil = ImagePickerUtil();
@@ -55,6 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
       return Text(AppLocalizations.of(context)!.homeTitle);
     } else if (_currentPage == 1) {
       return Text(AppLocalizations.of(context)!.searchScreenTitle);
+    } else if (_currentPage == 2) {
+      return Text(AppLocalizations.of(context)!.firebaseSearchTitle);
     } else {
       return Text(AppLocalizations.of(context)!.homeEasterEggTitle);
     }
@@ -68,7 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return NavigationBar(
       onDestinationSelected: _handleDestionationChanged,
       selectedIndex: _selectedIndex,
-      destinations: [homeScreenButton(), scanButton(), searchScreenButton()],
+      destinations: [
+        homeScreenButton(),
+        scanButton(),
+        searchScreenButton(),
+        searchFirebaseScreenButton(),
+      ],
       labelTextStyle: _getNagivationLabelStyle(),
     );
   }
@@ -118,6 +127,11 @@ class _HomeScreenState extends State<HomeScreen> {
         _selectedIndex = index;
         _currentPage = 1;
       });
+    } else if (index == 3) {
+      setState(() {
+        _selectedIndex = index;
+        _currentPage = 2;
+      });
     }
   }
 
@@ -139,6 +153,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return NavigationDestination(
       icon: Icon(Icons.search),
       label: AppLocalizations.of(context)!.appBarNavigationSearch,
+    );
+  }
+
+  NavigationDestination searchFirebaseScreenButton() {
+    return NavigationDestination(
+      icon: Icon(Icons.local_fire_department),
+      label: AppLocalizations.of(context)!.firebaseNavMenuButton,
     );
   }
 

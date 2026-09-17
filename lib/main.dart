@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spending_docs/core/database/app_database.dart';
@@ -10,11 +11,15 @@ import 'package:spending_docs/features/receipts/data/repositories/receipts_repos
 import 'package:spending_docs/features/scan/cubits/receipt_scan_image_cubit.dart';
 import 'package:spending_docs/features/search/blocs/search_bloc.dart';
 import 'package:spending_docs/features/translation/bloc/translation_cubit.dart';
+import 'package:spending_docs/firebase_options.dart';
 import 'package:spending_docs/l10n/app_localizations.dart';
 import 'package:spending_docs/themes/app_theme.dart';
 
-void main() {
+void main() async {
   final database = AppDatabase();
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(MyApp(database: database));
 }

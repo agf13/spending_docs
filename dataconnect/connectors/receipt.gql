@@ -1,0 +1,37 @@
+query ListReceipts @auth(level: USER) {
+  receipts(orderBy: [{date: DESC}]) {
+    id
+    storeName
+    date
+    amount
+    card
+    receiptItems_on_receipt {
+      itemName
+      price
+    }
+  }
+}
+
+query ListReceiptsWithoutItems @auth(level: PUBLIC) {
+  receipts(orderBy: [{date: DESC}]) {
+    id
+    storeName
+    date
+    amount
+    card
+  }
+}
+
+query ListReceiptsByStoreName($storeName: String!) @auth(level: PUBLIC) {
+  receipts(where: {storeName: {pattern: {regex: $storeName, ignoreCase: true}}}) {
+    id
+    storeName
+    date
+    amount
+    card
+  }
+}
+
+mutation UpdateReceiptDate {
+  _execute(sql: "ALTER TABLE receipt ALTER COLUMN date TYPE timestamptz")
+}

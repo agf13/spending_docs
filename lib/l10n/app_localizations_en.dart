@@ -167,4 +167,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get searchScreenUnknownError =>
       'Unkwnown error. Try to reopen the app';
+
+  @override
+  String get firebaseSearchTitle => 'Receipts From Firebase';
+
+  @override
+  String get firebaseNavMenuButton => 'Firebase';
 }
