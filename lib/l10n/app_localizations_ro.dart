@@ -169,4 +169,10 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get searchScreenUnknownError =>
       'Eroare neasteptata. Incearca sa redeschizi aplicatia';
+
+  @override
+  String get firebaseSearchTitle => 'Bonuri Din Firebase';
+
+  @override
+  String get firebaseNavMenuButton => 'Firebase';
 }

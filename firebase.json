@@ -1,0 +1,4 @@
+{"emulators":{"dataconnect":{"dataDir":"dataconnect/.dataconnect/pgliteData","port":9399},
+  "auth":{"port":9099},"ui":{"enabled":true},"singleProjectMode":true},
+  "dataconnect":{"source":"dataconnect","postdeploy":"bash ./scripts/deploy_message.sh"},
+  "flutter":{"platforms":{"android":{"default":{"projectId":"spending-docs","appId":"1:714328318577:android:9faf8bc863348b196db1d0","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"spending-docs","configurations":{"android":"1:714328318577:android:9faf8bc863348b196db1d0","ios":"1:714328318577:ios:a9d9addb878bb84d6db1d0","macos":"1:714328318577:ios:a9d9addb878bb84d6db1d0","web":"1:714328318577:web:adfe6cfa6d021e516db1d0","windows":"1:714328318577:web:f78a0674865ea9c86db1d0"}}}}}}

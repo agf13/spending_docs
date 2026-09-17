@@ -1,0 +1,12 @@
+type Receipt @table {
+  storeName: String!
+  date: Timestamp!
+  amount: Float!
+  card: String
+}
+
+type ReceiptItem @table {
+  receipt: Receipt!
+  itemName: String!
+  price: Float!
+}
