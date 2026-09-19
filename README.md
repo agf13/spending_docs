@@ -28,3 +28,4 @@ Project to keep track of receipts
 
 <img width="236" height="512" alt="review_ai_scan_1" src="https://github.com/user-attachments/assets/1a2e06f8-2652-4734-a007-e03fe9ba9dd8" />
 <img width="236" height="512" alt="new_receipt_icon_updated" src="https://github.com/user-attachments/assets/a6e479fd-6aac-4300-a8bd-a03dad243ac9" />
+<video src=https://github.com/user-attachments/assets/8a7f40db-7171-4289-9c5c-639eab7cd84c/>
