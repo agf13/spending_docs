@@ -12,3 +12,7 @@ drift_clean:
 # build drift auto-generated code
 drift_build:
 	dart run build_runner build
+
+# Use the make-migrations function of drift_dev
+make-migrations:
+	dart run drift_dev make-migrations
